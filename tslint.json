@@ -1,0 +1,41 @@
+{
+  "extends": [
+    "tslint:recommended",
+    "tslint-react",
+    "tslint-config-prettier"
+  ],
+  "rules": {
+    "interface-over-type-literal": false,
+    "object-literal-sort-keys": false,
+    "member-access": false,
+    "array-type": [
+      true,
+      "array"
+    ],
+    "no-empty": false,
+    "no-empty-interface": false,
+    "no-floating-promises": true,
+    "curly": [
+      true,
+      "ignore-same-line"
+    ],
+    "member-ordering": false,
+    "no-shadowed-variable": false,
+    "no-console": false,
+    "no-unused-expression": false,
+    "no-namespace": false,
+    "interface-name": false,
+    "max-classes-per-file": false,
+    "variable-name": [
+      true,
+      "check-format",
+      "allow-leading-underscore",
+      "allow-trailing-underscore",
+      "allow-pascal-case"
+    ],
+    "new-parens": false,
+    "align": false,
+    "ordered-imports": false,
+    "max-line-length": false
+  }
+}
