@@ -1,0 +1,16 @@
+.app, .app .app-container {
+  height: 100%;
+}
+
+.app .app-container {
+  padding-top: 64px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+@media (max-width: 425px) {
+  .app .app-container {
+    padding-top: 56px;
+  }
+}
