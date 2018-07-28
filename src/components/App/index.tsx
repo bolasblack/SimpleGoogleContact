@@ -1,30 +1,51 @@
-import { Inject } from 'react.di'
-import { GapiService } from '../../services/GapiService'
+import { AppBar, Drawer } from '@material-ui/core'
 import { PageHeader, PageHeaderProps } from '../PageHeader'
-import './style.css'
+import { ContactGroupSidebar } from '../../containers/ContactGroupSidebar'
+import { GoogleLoginButton } from '../GoogleLoginButton'
+import './style.scss'
 
-export type AppProps = PageHeaderProps
+export interface AppProps extends PageHeaderProps {
+  isSignedIn: boolean
+}
 
 export class App extends React.PureComponent<AppProps> {
-  @Inject gapiService: GapiService
-
-  public componentDidMount() {
-    void this.gapiService.renderSigninButton('google-login')
-  }
-
   public render() {
     return (
-      <div className="app">
-        <PageHeader
-          userinfo={this.props.userinfo}
-          isSigningOut={this.props.isSigningOut}
-          onSignOut={this.props.onSignOut}
-        />
+      <div className="App">
+        <AppBar className="App__header" position="fixed">
+          <PageHeader
+            userinfo={this.props.userinfo}
+            isSigningOut={this.props.isSigningOut}
+            onSignOut={this.props.onSignOut}
+          />
+        </AppBar>
 
-        <div className="app-container">
-          <div id="google-login" />
-        </div>
+        {this.props.isSignedIn ? this.renderContent() : this.renderGoogleLogin() }
       </div>
     );
+  }
+
+  private renderGoogleLogin() {
+    return (
+      <div className="App__container App__container--unsigned">
+        <GoogleLoginButton />
+      </div>
+    )
+  }
+
+  private renderContent() {
+    return (
+      <div className="App__container">
+        <Drawer
+          variant="permanent"
+          classes={{
+            paper: "App__sidebar",
+          }}
+        >
+          <ContactGroupSidebar />
+        </Drawer>
+        <main />
+      </div>
+    )
   }
 }

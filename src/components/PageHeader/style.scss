@@ -1,0 +1,24 @@
+.PageHeader {
+  &__brand {
+    display: flex;
+    align-items: center;
+    font-size: 22px;
+    outline: none;
+    color: #fff;
+    text-decoration: none;
+  }
+  &__brand:focus &__brand-name {
+    text-decoration: underline;
+  }
+  &__brand img {
+    margin-right: 8px;
+  }
+  &__brand-name {
+    line-height: 24px;
+    font-weight: normal;
+  }
+
+  &__title {
+    flex: 1;
+  }
+}

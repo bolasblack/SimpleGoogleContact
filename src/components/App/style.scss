@@ -1,0 +1,29 @@
+@import "../PageHeader/mixins";
+@import "../../styles/zIndex";
+
+.App {
+  & &__header {
+    z-index: $zIndex-drawer + 1;
+  }
+
+  &, &__contaienr {
+    height: 100%;
+  }
+
+  &__container {
+    @include PageHeader-padding(padding-top);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+
+  &__sidebar {
+    @include PageHeader-padding(padding-top);
+    width: 260px;
+
+    .ContactGroupSidebar__loading-container {
+      @include PageHeader-padding(margin-bottom);
+    }
+  }
+}

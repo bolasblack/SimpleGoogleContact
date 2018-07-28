@@ -147,3 +147,16 @@ declare namespace gapi.signin2 {
   /* https://developers.google.com/api-client-library/javascript/reference/referencedocs#gapisignin2renderid-options */
   export function render(id: string, options?: RenderOptions): void
 }
+
+declare namespace gapi.client {
+  export interface RequestOptions {
+    path: string;
+    method?: string;
+    params?: any;
+    headers?: any;
+    body?: any;
+    callback?: () => any;
+  }
+
+  export function request<T = any>(args: RequestOptions): HttpRequest<T>
+}

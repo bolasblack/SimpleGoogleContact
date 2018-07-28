@@ -1,0 +1,13 @@
+@import "../../styles/breakpoints";
+
+@mixin PageHeader-padding($attr-name) {
+  #{$attr-name}: 56px;
+
+  @include breakpoint-up($breakpoint-xs) {
+    #{$attr-name}: 48px;
+  }
+
+  @include breakpoint-up($breakpoint-sm) {
+    #{$attr-name}: 64px;
+  }
+}

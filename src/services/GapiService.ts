@@ -1,5 +1,4 @@
 import { Injectable } from 'react.di'
-// import { google } from 'googleapis'
 import loadjs from 'loadjs'
 import { Store } from '../store'
 import { googleLogin } from '../actionPacks'
@@ -13,7 +12,7 @@ const SCOPES = [
 
 @Injectable
 export class GapiService {
-  private loadPromise: Promise<typeof gapi>
+  private loadPromise: Promise<typeof gapi> | null = null
 
   async renderSigninButton(id: string) {
     const gapi = await this.load()
@@ -40,7 +39,7 @@ export class GapiService {
         }
       }
     }).then(gapi => new Promise<typeof gapi>((resolve, reject) => {
-      gapi.load("auth2:signin2", () => {
+      gapi.load("client:auth2:signin2", () => {
         gapi.auth2.init({ client_id: CLIENT_ID })
 
         resolve(gapi)
@@ -49,10 +48,8 @@ export class GapiService {
   }
 
   async logout() {
-    const gapi = await this.load()
-    const gAuth = gapi.auth2.getAuthInstance()!
-    if (!gAuth.isSignedIn.get()) return
-    await gAuth.signOut()
+    if (!(await this.isSignedIn())) return
+    await gapi.auth2.getAuthInstance()!.signOut()
   }
 
   async setupAutoTriggerSignStatus(store: Store) {
@@ -64,5 +61,14 @@ export class GapiService {
         store.dispatch(googleLogin.actionCreators.signedOut())
       }
     })
+  }
+
+  async isSignedIn() {
+    const gapi = await this.load()
+    return gapi.auth2.getAuthInstance()!.isSignedIn.get()
+  }
+
+  async request<T>(arg: gapi.client.RequestOptions) {
+    return (await this.load()).client.request<T>(arg)
   }
 }

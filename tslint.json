@@ -37,6 +37,7 @@
     "new-parens": false,
     "align": false,
     "ordered-imports": false,
-    "max-line-length": false
+    "max-line-length": false,
+    "jsx-no-lambda": false
   }
 }

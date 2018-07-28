@@ -1,6 +1,7 @@
 import { createStandardAction, ActionType, isOfType } from 'typesafe-actions'
 import { filter, debounceTime, mergeMap } from 'rxjs/operators'
 import produce from 'immer'
+import { createSelector } from 'reselect'
 import { Epic, SetupStore } from '../types'
 import { State } from '../store'
 import { GapiService } from '../services/GapiService'
@@ -33,40 +34,49 @@ export const actionCreators = {
 
 export type Actions = ActionType<typeof actionCreators>
 
-export const selectors = {
-  basicProfile(state: State) {
-    return state.google_login && state.google_login.basicProfile
-  },
-  authResponse(state: State) {
-    return state.google_login && state.google_login.authResponse
-  },
-  isSignedIn(state: State) {
-    return Boolean(selectors.authResponse(state))
-  },
-  isSigningOut(state: State) {
-    console.log('isSigningOut', Boolean(state.google_login && state.google_login.signOutStartdAt))
-    return Boolean(state.google_login && state.google_login.signOutStartdAt)
-  },
+export namespace selectors {
+  const getGoogleLogin = (state: State) => state.google_login
+
+  export const basicProfile = createSelector(
+    getGoogleLogin,
+    info => info && info.basicProfile,
+  )
+
+  export const authResponse = createSelector(
+    getGoogleLogin,
+    info => info && info.authResponse
+  )
+
+  export const isSignedIn = createSelector(
+    authResponse,
+    Boolean,
+  )
+
+  export const isSigningOut = createSelector(
+    getGoogleLogin,
+    info => Boolean(info && info.signOutStartdAt),
+  )
 }
 
-export const reducer = (state: State, action: Actions) => produce(state, state => {
-  switch(action.type) {
-    case ActionTypes.signIn:
-      state.google_login = { ...action.payload }
-      break
-    case ActionTypes.signOut:
-      state.google_login = (state.google_login || {})
-      state.google_login.signOutStartdAt = Date.now()
-      break
-    case ActionTypes.signedOut:
-      if (selectors.isSigningOut(state)) {
-        delete state.google_login!.signOutStartdAt
-        delete state.google_login!.authResponse
-        delete state.google_login!.basicProfile
-      }
-      break
-  }
-})
+export const reducer = (state: State, action: Actions) =>
+  produce(state, state => {
+    switch(action.type) {
+      case ActionTypes.signIn:
+        state.google_login = { ...action.payload }
+        break
+      case ActionTypes.signOut:
+        state.google_login = (state.google_login || {})
+        state.google_login.signOutStartdAt = Date.now()
+        break
+      case ActionTypes.signedOut:
+        if (selectors.isSigningOut(state)) {
+          delete state.google_login!.signOutStartdAt
+          delete state.google_login!.authResponse
+          delete state.google_login!.basicProfile
+        }
+        break
+    }
+  })
 
 export const epic: Epic<Actions> = (action$, state$, container) =>
   action$.pipe(

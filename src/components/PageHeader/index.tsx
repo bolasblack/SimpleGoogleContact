@@ -1,7 +1,5 @@
-import { AppBar, Toolbar, IconButton, Menu, MenuItem } from '@material-ui/core'
-import { Menu as MenuIcon } from '@material-ui/icons'
-import { MouseEvent } from 'react'
-import './style.css'
+import { Toolbar, Avatar, IconButton, Menu, MenuItem, Typography } from '@material-ui/core'
+import './style.scss'
 
 export interface PageHeaderProps {
   userinfo?: {
@@ -24,50 +22,44 @@ export class PageHeader extends React.PureComponent<PageHeaderProps, PageHeaderS
     const { userinfo } = this.props
 
     return (
-      <AppBar className="PageHeader">
-        <Toolbar className="PageHeader__toolbar">
-          <IconButton className="PageHeader__menu-icon" color="inherit">
-            <MenuIcon />
-          </IconButton>
+      <Toolbar className="PageHeader">
+        <Typography variant="title" className="PageHeader__title">
+          <a className="PageHeader__brand" href="/" title="通讯录">
+            <img src="//www.gstatic.com/images/branding/googlelogo/svg/googlelogo_light_clr_74x24px.svg" />
+            <span className="PageHeader__brand-name">通讯录</span>
+          </a>
+        </Typography>
 
-          <div className="PageHeader__centre">
-            <a className="PageHeader__brand" href="/" title="通讯录">
-              <img src="//www.gstatic.com/images/branding/googlelogo/svg/googlelogo_light_clr_74x24px.svg" />
-              <span className="PageHeader__brand-name">通讯录</span>
-            </a>
-          </div>
+        {userinfo && (
+           <div>
+             <IconButton
+               onClick={this.openMenu}
+               color="inherit"
+             >
+               <Avatar className="PageHeader__avatar" src={userinfo.imageUrl} />
+             </IconButton>
 
-          {userinfo && (
-             <div>
-               <IconButton
-                 onClick={this.openMenu}
-                 color="inherit"
-               >
-                 <img className="PageHeader__avatar" src={userinfo.imageUrl} />
-               </IconButton>
-
-               <Menu
-                 anchorEl={this.state.anchorEl}
-                 anchorOrigin={{
-                   vertical: 'top',
-                   horizontal: 'right',
-                 }}
-                 transformOrigin={{
-                   vertical: 'top',
-                   horizontal: 'right',
-                 }}
-                 open={!!this.state.menuOpening}
-                 onClose={this.closeMenu}
-               >
-                 <MenuItem>{ userinfo.name }</MenuItem>
-                 <MenuItem onClick={this.onClickSignOut}>
-                   {this.props.isSigningOut ? '登出中' : '登出'}
-                 </MenuItem>
-               </Menu>
-             </div>
-          )}
-        </Toolbar>
-      </AppBar>
+             <Menu
+               anchorEl={this.state.anchorEl}
+               anchorOrigin={{
+                 vertical: 'top',
+                 horizontal: 'right',
+               }}
+               transformOrigin={{
+                 vertical: 'top',
+                 horizontal: 'right',
+               }}
+               open={!!this.state.menuOpening}
+               onClose={this.closeMenu}
+             >
+               <MenuItem>{ userinfo.name }</MenuItem>
+               <MenuItem onClick={this.onClickSignOut}>
+                 {this.props.isSigningOut ? '登出中' : '登出'}
+               </MenuItem>
+             </Menu>
+           </div>
+        )}
+      </Toolbar>
     )
   }
 
@@ -76,7 +68,7 @@ export class PageHeader extends React.PureComponent<PageHeaderProps, PageHeaderS
     this.closeMenu()
   }
 
-  private openMenu = (event: MouseEvent<HTMLElement>) => {
+  private openMenu = (event: React.MouseEvent<HTMLElement>) => {
     this.setState({
       anchorEl: event.currentTarget,
       menuOpening: true,

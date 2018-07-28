@@ -1,12 +1,13 @@
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
+import { createStructuredSelector } from 'reselect'
 import { App as AppComponent } from '../components/App'
-import { State } from '../store'
 import { googleLogin } from '../actionPacks'
 
-export const mapStateToProps = (state: State) => ({
-  userinfo: googleLogin.selectors.basicProfile(state),
-  isSigningOut: googleLogin.selectors.isSigningOut(state),
+export const mapStateToProps = createStructuredSelector({
+  isSignedIn: googleLogin.selectors.isSignedIn,
+  userinfo: googleLogin.selectors.basicProfile,
+  isSigningOut: googleLogin.selectors.isSigningOut,
 })
 
 export const mapDispatchToProps = (dispatch: Dispatch) => ({

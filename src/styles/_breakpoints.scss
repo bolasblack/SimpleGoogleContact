@@ -1,0 +1,46 @@
+// https://material-ui.com/layout/breakpoints/
+
+$breakpoint-xs: 0px;
+$breakpoint-sm: 600px;
+$breakpoint-md: 960px;
+$breakpoint-lg: 1280px;
+$breakpoint-xl: 1920px;
+$breakpoints: (
+  $breakpoint-xs,
+  $breakpoint-sm,
+  $breakpoint-md,
+  $breakpoint-lg,
+  $breakpoint-xl,
+);
+
+@mixin breakpoint-up($breakpoint) {
+  @media (min-width: $breakpoint) {
+    @content;
+  }
+}
+
+@mixin breakpoint-down($breakpoint) {
+  @media (max-width: $breakpoint) {
+    @content;
+  }
+}
+
+@mixin breakpoint-between($breakpoint-min, $breakpoint-max) {
+  @media (min-width: $breakpoint-min) and (max-width: $breakpoint-max) {
+    @content;
+  }
+}
+
+@mixin breakpoint-only($breakpoint) {
+  $breakpoint-index: index($breakpoints, $breakpoint);
+
+  @if $breakpoint-index {
+    @media (min-width: $breakpoint) and (max-width: nth($breakpoints, $breakpoint-index + 1)) {
+      @content;
+    }
+  } @else {
+    @media (min-width: $breakpoint) {
+      @content;
+    }
+  }
+}
