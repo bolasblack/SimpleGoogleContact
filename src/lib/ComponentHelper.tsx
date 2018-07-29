@@ -1,30 +1,27 @@
 export interface StateUpProps<State = any> {
   state: State
+  getState(): State
   setState(patcher: Partial<State> | ((state: State) => State)): void
 }
 
 export type SetState = (patch: any | (<T>(state: T) => T)) => void
 
 export function stateBinding<T>(
-  context: T | (() => T),
+  getContextState: () => T,
   setContextState: SetState,
 ): StateUpProps<T>
 export function stateBinding<T extends object, SN extends keyof T>(
-  context: T | (() => T),
+  getContext: () => T,
   setContextState: SetState,
   statePropertyName: SN,
 ): StateUpProps<T[SN]>
 export function stateBinding<T, SN extends keyof T>(
-  context: T | (() => T),
+  getContext: () => T,
   setContextState: SetState,
   statePropertyName?: SN,
 ) {
   const getState = () => {
-    if (typeof context === 'function') {
-      return statePropertyName ? context()[statePropertyName] : context()
-    } else {
-      return statePropertyName ? context[statePropertyName] : context
-    }
+    return statePropertyName ? getContext()[statePropertyName] : getContext()
   }
 
   const setState: StateUpProps<T[SN]>['setState'] = (patch: any) => {
@@ -47,6 +44,7 @@ export function stateBinding<T, SN extends keyof T>(
 
   return {
     state: getState(),
+    getState,
     setState,
   }
 }
@@ -56,7 +54,7 @@ export type StateUpComponentType<State, Props extends StateUpProps<State>> = Rea
 }
 
 export type WithoutStateUpProps<Props> = {
-  [K in Exclude<keyof Props, 'state' | 'setState'>]: Props[K]
+  [K in Exclude<keyof Props, keyof StateUpProps>]: Props[K]
 }
 
 export function wrapStateUp<State, Props extends StateUpProps<State>>(Component: StateUpComponentType<State, Props>) {
@@ -69,7 +67,7 @@ export function wrapStateUp<State, Props extends StateUpProps<State>>(Component:
       return (
         <Component
           {...stateBinding(
-            this.state,
+            () => this.state,
             this.setState.bind(this),
           )}
           {...this.props}

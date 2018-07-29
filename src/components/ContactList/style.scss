@@ -1,0 +1,26 @@
+.ContactList {
+  &__empty-state,
+  &__loading-state {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #aaa;
+  }
+
+  &__list {
+    height: 100%;
+    overflow-y: auto;
+  }
+
+  &__list-item {
+    &:not(:hover) &__actions {
+      display: none;
+    }
+
+    &:hover &__inner {
+      text-decoration: none;
+      background-color: rgba(0, 0, 0, 0.08);
+    }
+  }
+}

@@ -28,7 +28,6 @@ export const UnwrappedButton = ({ loading, classes, progressProps, ...buttonProp
     /* tslint:enable:no-string-literal */
   }>
     <MuiButton
-      variant="contained"
       disabled={loading}
       {...buttonProps}
     />

@@ -2,7 +2,7 @@ import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
 import { createStructuredSelector } from 'reselect'
 import { wrapStateUp } from "../lib/ComponentHelper"
-import { App as AppComponent } from '../components/App'
+import { App as Component } from '../components/App'
 import { googleLogin } from '../actionPacks'
 
 export const mapStateToProps = createStructuredSelector({
@@ -17,4 +17,4 @@ export const mapDispatchToProps = (dispatch: Dispatch) => ({
   },
 })
 
-export const App = connect(mapStateToProps, mapDispatchToProps)(wrapStateUp(AppComponent))
+export const App = connect(mapStateToProps, mapDispatchToProps)(wrapStateUp(Component))

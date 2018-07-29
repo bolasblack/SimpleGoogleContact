@@ -29,10 +29,7 @@ export function ContactGroupEditDialog({
         />
       </DialogContent>
       <DialogActions>
-        <Button
-          color="primary"
-          onClick={e => setState({ open: false })}
-        >
+        <Button onClick={e => setState({ open: false })}>
           取消
         </Button>
         <Button

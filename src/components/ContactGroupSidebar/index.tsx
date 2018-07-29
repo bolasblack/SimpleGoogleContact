@@ -2,7 +2,7 @@ import { List, ListSubheader, ListItem, ListItemIcon, ListItemText, Divider, Cir
 import * as Icons from '@material-ui/icons'
 import { compose } from 'ramda'
 import { ContactGroup, GroupType, ContactGroupResourceName } from '../../services/ContactGroupService'
-import { ContactListItem } from './ContactListItem'
+import { ContactGroupListItem } from './ContactGroupListItem'
 import { ContactGroupEditDialog } from './ContactGroupEditDialog'
 import { ConfirmDialog } from "../ConfirmDialog"
 import './style.scss'
@@ -30,7 +30,7 @@ export function ContactGroupSidebar(props: ContactGroupSidebar.Props) {
     )
   } else {
     return (
-      <div>
+      <div className="ContactGroupSidebar">
         {renderContactGroupSidebarList({
            contactGroups,
            selectedResourceName,
@@ -83,26 +83,22 @@ export function ContactGroupSidebar(props: ContactGroupSidebar.Props) {
         />
 
         <ContactGroupEditDialog
-          {...stateBinding(state, setState, 'contactGroupCreateDialogState')}
+          {...stateBinding(props.getState, setState, 'contactGroupCreateDialogState')}
           onSubmit={async (_, contactGroup) => {
             onCreate && (await onCreate(contactGroup))
-            setTimeout(() => {
-              setState({
-                contactGroupCreateDialogState: ContactGroupEditDialog.getInitialState(),
-              })
-            }, 0)
+            setState({
+              contactGroupCreateDialogState: ContactGroupEditDialog.getInitialState(),
+            })
           }}
         />
 
         <ContactGroupEditDialog
-          {...stateBinding(state, setState, 'contactGroupEditDialogState')}
+          {...stateBinding(props.getState, setState, 'contactGroupEditDialogState')}
           onSubmit={async (contactGroup, updated) => {
             onUpdate && (await onUpdate(contactGroup, updated))
-            setTimeout(() => {
-              setState({
-                contactGroupEditDialogState: ContactGroupEditDialog.getInitialState(),
-              })
-            }, 0)
+            setState({
+              contactGroupEditDialogState: ContactGroupEditDialog.getInitialState(),
+            })
           }}
         />
       </div>
@@ -127,29 +123,27 @@ const renderContactGroupSidebarList = (props: {
     <>
       <List dense={true}>
         {getSystemGroups(props.contactGroups).map(g =>
-          <ContactListItem
-            dense={true}
-            button={true}
-            actived={g.resourceName === props.selectedResourceName}
-            key={g.resourceName}
-            contactGroup={g}
-            onClick={() => onSelect(g)}
-          />
+          ContactGroupListItem({
+            // key: g.resourceName,
+            button: true,
+            actived: g.resourceName === props.selectedResourceName,
+            contactGroup: g,
+            onClick: () => onSelect(g),
+          })
         )}
       </List>
       <Divider />
       <List dense={true} subheader={<ListSubheader>标签</ListSubheader>}>
         {getOtherGroups(props.contactGroups).map(g =>
-          <ContactListItem
-            dense={true}
-            button={true}
-            actived={g.resourceName === props.selectedResourceName}
-            key={g.resourceName}
-            contactGroup={g}
-            onUpdate={() => props.onUpdate(g)}
-            onDelete={() => props.onDelete(g)}
-            onClick={() => onSelect(g)}
-          />
+          ContactGroupListItem({
+            // key: g.resourceName,
+            button: true,
+            actived: g.resourceName === props.selectedResourceName,
+            contactGroup: g,
+            onUpdate: () => props.onUpdate(g),
+            onDelete: () => props.onDelete(g),
+            onClick: () => onSelect(g),
+          })
         )}
         <ListItem dense={true} button={true}>
           <ListItemIcon>

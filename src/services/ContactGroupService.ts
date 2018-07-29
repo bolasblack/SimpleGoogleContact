@@ -2,6 +2,8 @@ import { Injectable, Inject } from 'react.di'
 import { people_v1 } from 'googleapis'
 import { GapiService } from './GapiService'
 
+export const DEFAULT_RESOURCE_NAME = 'contactGroups/all'
+
 export enum GroupType {
   Unspecified = 'GROUP_TYPE_UNSPECIFIED',
   UserDefined = 'USER_CONTACT_GROUP',
@@ -26,7 +28,7 @@ export class ContactGroupService {
     })).result
   }
 
-  async get(resourceName: ContactGroupResourceName, params?: { maxMember?: number }) {
+  async get(resourceName: ContactGroupResourceName, params?: { maxMembers?: number }) {
     return (await this.gapiService.request<people_v1.Schema$ContactGroup>({
       path: `https://people.googleapis.com/v1/${resourceName}`,
       params,

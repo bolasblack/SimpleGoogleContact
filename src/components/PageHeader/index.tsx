@@ -19,7 +19,7 @@ export class PageHeader extends React.PureComponent<PageHeaderProps, PageHeaderS
   public state: PageHeaderState = {}
 
   public render() {
-    const { userinfo } = this.props
+    const { userinfo, isSigningOut } = this.props
 
     return (
       <Toolbar className="PageHeader">
@@ -54,7 +54,7 @@ export class PageHeader extends React.PureComponent<PageHeaderProps, PageHeaderS
              >
                <MenuItem>{ userinfo.name }</MenuItem>
                <MenuItem onClick={this.onClickSignOut}>
-                 {this.props.isSigningOut ? '登出中' : '登出'}
+                 {isSigningOut ? '登出中' : '登出'}
                </MenuItem>
              </Menu>
            </div>

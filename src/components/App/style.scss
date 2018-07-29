@@ -8,7 +8,7 @@
     z-index: $zIndex-drawer + 1;
   }
 
-  &, &__container {
+  &, &__container, &__main {
     height: 100%;
   }
 
@@ -26,12 +26,29 @@
     @include PageHeader-padding(padding-top);
     width: $sidebar-width;
 
-    .ContactGroupSidebar__loading-container {
-      @include PageHeader-padding(margin-bottom);
+    .ContactGroupSidebar {
+      padding-top: 11px;
+
+      &__loading-container {
+        @include PageHeader-padding(margin-bottom);
+      }
     }
   }
 
   &__main {
     margin-left: $sidebar-width;
+  }
+
+  .ContactList {
+    height: 100%;
+
+    &__empty-state,
+    &__loading-state {
+      margin-right: $sidebar-width;
+    }
+
+    &__list {
+      padding: 20px 75px 20px 28px;
+    }
   }
 }

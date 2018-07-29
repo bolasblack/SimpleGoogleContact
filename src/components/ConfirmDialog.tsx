@@ -20,10 +20,7 @@ export function ConfirmDialog({
         <DialogContentText>{message}</DialogContentText>
       </DialogContent> }
       <DialogActions>
-        <Button
-          color="primary"
-          onClick={e => onCancel()}
-        >
+        <Button onClick={e => onCancel()}>
           取消
         </Button>
         <Button

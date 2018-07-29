@@ -1,43 +1,24 @@
 import { Tooltip, IconButton, ListItem, ListItemIcon, ListItemText, ListItemSecondaryAction } from '@material-ui/core'
-import { withStyles, StyleRulesCallback, StyledComponentProps } from "@material-ui/core/styles"
 import { ListItemProps } from '@material-ui/core/ListItem'
 import * as Icons from '@material-ui/icons'
 import { ContactGroup, GroupType } from '../../services/ContactGroupService'
+import { theme } from "../../styles/theme"
 
-type ClassKeys = 'activedListItem' | 'activedListItemIcon' | 'activedListItemText'
-
-const contactListItemStyle: StyleRulesCallback<ClassKeys> = theme => ({
-  activedListItem: {
-    '&&': {
-      opacity: 1,
-      backgroundColor: '#f5f5f5',
-      pointerEvents: 'auto',
-    },
-  },
-  activedListItemIcon: {
-    fill: theme.palette.primary.main,
-  },
-  activedListItemText: {
-    color: theme.palette.primary.main,
-  },
-})
-
-export interface ContactListItemProps extends ListItemProps {
-  classes: ListItemProps['classes'] & StyledComponentProps<ClassKeys>['classes']
+export interface ContactGroupListItemProps extends ListItemProps {
   contactGroup: ContactGroup
   actived?: boolean
   onUpdate?: () => void
   onDelete?: () => void
 }
 
-export const UnwrappedContactListItem = ({
+export const ContactGroupListItem = ({
   classes,
   contactGroup,
   actived,
   onUpdate,
   onDelete,
   ...listItemProps
-}: ContactListItemProps) => {
+}: ContactGroupListItemProps) => {
   const secondaryAction = (
     <ListItemSecondaryAction>
       <Tooltip title="重命名标签">
@@ -53,26 +34,18 @@ export const UnwrappedContactListItem = ({
     </ListItemSecondaryAction>
   )
 
-  const {
-    activedListItem,
-    activedListItemIcon,
-    activedListItemText,
-    ...listItemClasses
-  } = classes!
-
   return (
     <ListItem
       {...listItemProps}
-      classes={listItemClasses}
-      className={actived ? activedListItem : ''}
+      style={actived ? {backgroundColor: '#f5f5f5'} : {}}
     >
-      <ListItemIcon className={actived ? activedListItemIcon : ''}>
-        {getContactIcon(contactGroup)}
+      <ListItemIcon style={actived ? {fill: theme.palette.primary.main} : {}}>
+        {getContactGroupIcon(contactGroup)}
       </ListItemIcon>
       <ListItemText
         primary={contactGroup.formattedName}
         primaryTypographyProps={{
-          className: actived ? activedListItemText : '',
+          style: actived ? {color: theme.palette.primary.main} : {},
         }}
       />
       {contactGroup.groupType !== GroupType.SystemDefined ? secondaryAction : null}
@@ -80,9 +53,7 @@ export const UnwrappedContactListItem = ({
   )
 }
 
-export const ContactListItem = withStyles(contactListItemStyle)(UnwrappedContactListItem)
-
-export const getContactIcon = (contactGroup: ContactGroup) => {
+export const getContactGroupIcon = (contactGroup: ContactGroup) => {
   if (contactGroup.groupType !== GroupType.SystemDefined) {
     return (<Icons.Label />)
   }

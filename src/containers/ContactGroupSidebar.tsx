@@ -5,7 +5,7 @@ import { stateBinding } from '../lib/ComponentHelper'
 
 export interface ContactGroupSidebarProps {
   selectedResourceName?: ContactGroupResourceName
-  onSelect?: (contactGroup: ContactGroup) => void
+  onSelect: (contactGroupResourceName?: ContactGroupResourceName) => void
 }
 
 export interface ContactGroupSidebarState {
@@ -35,13 +35,13 @@ export class ContactGroupSidebar extends React.PureComponent<ContactGroupSidebar
         contactGroups={this.state.contactGroups}
 
         {...stateBinding(
-          this.state,
+          () => this.state,
           this.setState.bind(this),
           'componentState',
         )}
 
         selectedResourceName={this.props.selectedResourceName}
-        onSelect={this.props.onSelect}
+        onSelect={group => this.props.onSelect(group.resourceName)}
         onCreate={this.onCreate}
         onUpdate={this.onUpdate}
         onDelete={this.onDelete}
@@ -80,7 +80,11 @@ export class ContactGroupSidebar extends React.PureComponent<ContactGroupSidebar
   private fetchData = async () => {
     this.setState({ fetchingData: true })
 
-    const contactGroups = (await this.groupService.list({ pageSize: 500 })).contactGroups!
+    const contactGroups = (await this.groupService.list({ pageSize: 500 })).contactGroups || []
+
+    if (!contactGroups.some(g => g.resourceName === this.props.selectedResourceName)) {
+      this.props.onSelect()
+    }
 
     this.setState({
       fetchingData: false,

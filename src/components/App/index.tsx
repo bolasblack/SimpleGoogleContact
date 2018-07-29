@@ -4,7 +4,7 @@ import { StateUpProps } from "../../lib/ComponentHelper"
 import { ContactGroupSidebar } from '../../containers/ContactGroupSidebar'
 import { GoogleLoginButton } from '../GoogleLoginButton'
 import './style.scss'
-import { ContactGroupResourceName } from '../../services/ContactGroupService'
+import { ContactGroupResourceName, DEFAULT_RESOURCE_NAME as DEFAULT_CONTACT_GROUP_RESOURCE_NAME } from '../../services/ContactGroupService'
 import { ContactList } from "../../containers/ContactList"
 
 export function App(props: App.Props) {
@@ -39,6 +39,8 @@ const renderGoogleLogin = () => {
 }
 
 const renderContent = ({ state, setState }: App.Props) => {
+  const selectedResourceName = state.selectedContactGroupResourceName || DEFAULT_CONTACT_GROUP_RESOURCE_NAME
+
   return (
     <div className="App__container">
       <Drawer
@@ -48,14 +50,15 @@ const renderContent = ({ state, setState }: App.Props) => {
         }}
       >
         <ContactGroupSidebar
-          selectedResourceName={state.selectedContactGroupResourceName}
-          onSelect={group => {
-            setState({ selectedContactGroupResourceName: group.resourceName! })
+          selectedResourceName={selectedResourceName}
+          onSelect={resourceName => {
+            setState({ selectedContactGroupResourceName: resourceName! })
           }}
         />
       </Drawer>
-      <main>
-        <ContactList selectedContactGroupResourceName={state.selectedContactGroupResourceName} />
+
+      <main className="App__main">
+        <ContactList selectedContactGroupResourceName={selectedResourceName} />
       </main>
     </div>
   )
@@ -70,7 +73,5 @@ export namespace App {
     selectedContactGroupResourceName?: ContactGroupResourceName
   }
 
-  export const getInitialState = (): State => ({
-    selectedContactGroupResourceName: 'contactGroups/chatBuddies',
-  })
+  export const getInitialState = (): State => ({})
 }
