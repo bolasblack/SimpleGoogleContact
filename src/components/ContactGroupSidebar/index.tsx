@@ -143,29 +143,29 @@ const renderContactGroupSidebarList = (props: {
   return (
     <>
       <List dense={true}>
-        {getSystemGroups(props.contactGroups).map(g =>
-          ContactGroupListItem({
-            // key: g.resourceName,
-            button: true,
-            actived: g.resourceName === props.selectedResourceName,
-            contactGroup: g,
-            onClick: () => onSelect(g),
-          }),
-        )}
+        {getSystemGroups(props.contactGroups).map(g => (
+          <ContactGroupListItem
+            key={g.resourceName}
+            button={true}
+            actived={g.resourceName === props.selectedResourceName}
+            contactGroup={g}
+            onClick={() => onSelect(g)}
+          />
+        ))}
       </List>
       <Divider />
       <List dense={true} subheader={<ListSubheader>标签</ListSubheader>}>
-        {getOtherGroups(props.contactGroups).map(g =>
-          ContactGroupListItem({
-            // key: g.resourceName,
-            button: true,
-            actived: g.resourceName === props.selectedResourceName,
-            contactGroup: g,
-            onUpdate: () => props.onUpdate(g),
-            onDelete: () => props.onDelete(g),
-            onClick: () => onSelect(g),
-          }),
-        )}
+        {getOtherGroups(props.contactGroups).map(g => (
+          <ContactGroupListItem
+            key={g.resourceName}
+            button={true}
+            actived={g.resourceName === props.selectedResourceName}
+            contactGroup={g}
+            onUpdate={() => props.onUpdate(g)}
+            onDelete={() => props.onDelete(g)}
+            onClick={() => onSelect(g)}
+          />
+        ))}
         <ListItem dense={true} button={true}>
           <ListItemIcon>
             <Icons.Add />

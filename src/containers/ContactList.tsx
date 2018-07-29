@@ -114,7 +114,7 @@ export class ContactList extends React.PureComponent<
 
   private onUpdate = async (person: Person, updated: Partial<Person>) => {
     if (!person.resourceName) {
-      // TOOD: 集成 Error 定义一个 DisplayableError 用来抛出异常在顶部抓住后展示
+      // TOOD: 继承 Error 定义一个 DisplayableError 用来抛出异常在顶部抓住后展示
       throw new Error('找不到正在编辑的联系人，请刷新页面后重试')
     }
 

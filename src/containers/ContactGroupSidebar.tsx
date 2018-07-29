@@ -66,7 +66,7 @@ export class ContactGroupSidebar extends React.PureComponent<
     updated: ContactGroup,
   ) => {
     if (!contactGroup.resourceName) {
-      // TOOD: 集成 Error 定义一个 DisplayableError 用来抛出异常在顶部抓住后展示
+      // TOOD: 继承 Error 定义一个 DisplayableError 用来抛出异常在顶部抓住后展示
       throw new Error('找不到正在编辑的标签，请刷新页面后重试')
     }
 
