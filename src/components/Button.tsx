@@ -1,6 +1,12 @@
 import { withStyles, StyleRulesCallback } from '@material-ui/core/styles'
-import { default as MuiButton, ButtonProps as MuiButtonProps } from '@material-ui/core/Button'
-import { default as MuiCircularProgress, CircularProgressProps as MuiCircularProgressProps } from "@material-ui/core/CircularProgress"
+import {
+  default as MuiButton,
+  ButtonProps as MuiButtonProps,
+} from '@material-ui/core/Button'
+import {
+  default as MuiCircularProgress,
+  CircularProgressProps as MuiCircularProgressProps,
+} from '@material-ui/core/CircularProgress'
 
 const styles: StyleRulesCallback = theme => ({
   wrapper: {
@@ -21,26 +27,30 @@ export interface ButtonProps extends MuiButtonProps {
   progressProps?: MuiCircularProgressProps
 }
 
-export const UnwrappedButton = ({ loading, classes, progressProps, ...buttonProps }: ButtonProps) => (
-  <div className={
-    /* tslint:disable:no-string-literal */
-    classes!['wrapper']
-    /* tslint:enable:no-string-literal */
-  }>
-    <MuiButton
-      disabled={loading}
-      {...buttonProps}
-    />
+export const UnwrappedButton = ({
+  loading,
+  classes,
+  progressProps,
+  ...buttonProps
+}: ButtonProps) => (
+  <div
+    className={
+      /* tslint:disable:no-string-literal */
+      classes!['wrapper']
+      /* tslint:enable:no-string-literal */
+    }
+  >
+    <MuiButton disabled={loading} {...buttonProps} />
     {loading && (
-       <MuiCircularProgress
-         size={24}
-         className={
-           /* tslint:disable:no-string-literal */
-           classes!['buttonProgress']
-           /* tslint:enable:no-string-literal */
-         }
-         {...progressProps}
-       />
+      <MuiCircularProgress
+        size={24}
+        className={
+          /* tslint:disable:no-string-literal */
+          classes!['buttonProgress']
+          /* tslint:enable:no-string-literal */
+        }
+        {...progressProps}
+      />
     )}
   </div>
 )

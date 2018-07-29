@@ -1,4 +1,10 @@
-import { Dialog, DialogTitle, DialogContent, DialogActions, TextField } from '@material-ui/core'
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  TextField,
+} from '@material-ui/core'
 import { ContactGroup } from '../../services/ContactGroupService'
 import { StateUpProps } from '../../lib/StateUp'
 import { Button } from '../Button'
@@ -10,10 +16,7 @@ export function ContactGroupEditDialog({
   onSubmit,
 }: ContactGroupEditDialog.Props) {
   return (
-    <Dialog
-      open={state.open}
-      onClose={e => setState({ open: false })}
-    >
+    <Dialog open={state.open} onClose={e => setState({ open: false })}>
       <DialogTitle>
         {state.mode === 'create' ? '创建标签' : '修改标签'}
       </DialogTitle>
@@ -29,9 +32,7 @@ export function ContactGroupEditDialog({
         />
       </DialogContent>
       <DialogActions>
-        <Button onClick={e => setState({ open: false })}>
-          取消
-        </Button>
+        <Button onClick={e => setState({ open: false })}>取消</Button>
         <Button
           color="primary"
           loading={state.submitting}
@@ -53,7 +54,10 @@ export function ContactGroupEditDialog({
 
 export namespace ContactGroupEditDialog {
   export interface Props extends StateUpProps<State> {
-    onSubmit(contactGroup: ContactGroup, patch: Partial<ContactGroup>): void | Promise<void>
+    onSubmit(
+      contactGroup: ContactGroup,
+      patch: Partial<ContactGroup>,
+    ): void | Promise<void>
   }
 
   export interface State {
@@ -64,10 +68,12 @@ export namespace ContactGroupEditDialog {
     submitting?: boolean
   }
 
-  export const getInitialState = (contactGroup?: Partial<ContactGroup>): State => {
+  export const getInitialState = (
+    contactGroup?: Partial<ContactGroup>,
+  ): State => {
     return {
       open: false,
-      mode: (!contactGroup || !contactGroup.resourceName) ? 'create' : 'update',
+      mode: !contactGroup || !contactGroup.resourceName ? 'create' : 'update',
       contactGroup: contactGroup || {},
       name: (contactGroup && contactGroup.name) || '',
     }

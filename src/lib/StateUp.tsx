@@ -29,11 +29,7 @@ export function stateBinding<T, SN extends keyof T>(
     if (typeof patch === 'function') {
       newSubState = patch(getState())
     } else {
-      newSubState = Object.assign(
-        {},
-        getState(),
-        patch,
-      )
+      newSubState = Object.assign({}, getState(), patch)
     }
     if (statePropertyName) {
       setContextState({ [statePropertyName]: newSubState })
@@ -49,7 +45,10 @@ export function stateBinding<T, SN extends keyof T>(
   }
 }
 
-export type StateUpComponentType<State, Props extends StateUpProps<State>> = React.ComponentType<Props> & {
+export type StateUpComponentType<
+  State,
+  Props extends StateUpProps<State>
+> = React.ComponentType<Props> & {
   getInitialState(): State
 }
 
@@ -57,19 +56,19 @@ export type WithoutStateUpProps<Props> = {
   [K in Exclude<keyof Props, keyof StateUpProps>]: Props[K]
 }
 
-export function wrapStateUp<State, Props extends StateUpProps<State>>(Component: StateUpComponentType<State, Props>) {
+export function wrapStateUp<State, Props extends StateUpProps<State>>(
+  Component: StateUpComponentType<State, Props>,
+) {
   return class extends React.PureComponent<WithoutStateUpProps<Props>, State> {
-    static displayName = `StateUpWrapped(${Component.displayName || Component.name})`
+    static displayName = `StateUpWrapped(${Component.displayName ||
+      Component.name})`
 
     state: State = Component.getInitialState()
 
     render() {
       return (
         <Component
-          {...stateBinding(
-            () => this.state,
-            this.setState.bind(this),
-          )}
+          {...stateBinding(() => this.state, this.setState.bind(this))}
           {...this.props}
         />
       )

@@ -16,19 +16,21 @@ export type ContactGroupResourceName = NonNullable<ContactGroup['resourceName']>
 
 @Injectable
 export class ContactGroupService {
-  constructor(
-    @Inject private gapiService: GapiService
-  ) {
-  }
+  constructor(@Inject private gapiService: GapiService) {}
 
-  async list(params?: { pageToken?: string, pageSize?: number }) {
-    return (await this.gapiService.request<people_v1.Schema$ListContactGroupsResponse>({
+  async list(params?: { pageToken?: string; pageSize?: number }) {
+    return (await this.gapiService.request<
+      people_v1.Schema$ListContactGroupsResponse
+    >({
       path: 'https://people.googleapis.com/v1/contactGroups',
       params,
     })).result
   }
 
-  async get(resourceName: ContactGroupResourceName, params?: { maxMembers?: number }) {
+  async get(
+    resourceName: ContactGroupResourceName,
+    params?: { maxMembers?: number },
+  ) {
     return (await this.gapiService.request<people_v1.Schema$ContactGroup>({
       path: `https://people.googleapis.com/v1/${resourceName}`,
       params,
@@ -65,7 +67,9 @@ export class ContactGroupService {
     resourceName: ContactGroupResourceName,
     body: people_v1.Schema$ModifyContactGroupMembersRequest,
   ) {
-    return (await this.gapiService.request<people_v1.Schema$ModifyContactGroupMembersResponse>({
+    return (await this.gapiService.request<
+      people_v1.Schema$ModifyContactGroupMembersResponse
+    >({
       path: `https://people.googleapis.com/v1/${resourceName}/members:modify`,
       method: 'post',
       body,

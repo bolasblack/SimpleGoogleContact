@@ -1,8 +1,14 @@
-import { Dialog, DialogTitle, DialogContent, DialogActions, TextField } from '@material-ui/core'
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  TextField,
+} from '@material-ui/core'
 import { StateUpProps } from '../../lib/StateUp'
 import { Button } from '../Button'
 import { Person, PersonService } from '../../services/PersonService'
-import { produce } from "immer"
+import { produce } from 'immer'
 
 export function PersonEditDialog({
   open,
@@ -12,10 +18,7 @@ export function PersonEditDialog({
   onClose,
 }: PersonEditDialog.Props) {
   return (
-    <Dialog
-      open={open}
-      onClose={onClose}
-    >
+    <Dialog open={open} onClose={onClose}>
       <DialogTitle>
         {state.mode === 'create' ? '创建联系人' : '修改联系人'}
       </DialogTitle>
@@ -27,11 +30,15 @@ export function PersonEditDialog({
             label="姓"
             type="text"
             value={PersonService.getName(state.person).familyName}
-            onChange={e => setState(produce(s => {
-              s.person.names = (s.person.names || [])
-              s.person.names[0] = (s.person.names[0] || {})
-              s.person.names[0].familyName = e.target.value
-            }))}
+            onChange={e =>
+              setState(
+                produce(s => {
+                  s.person.names = s.person.names || []
+                  s.person.names[0] = s.person.names[0] || {}
+                  s.person.names[0].familyName = e.target.value
+                }),
+              )
+            }
           />
 
           <TextField
@@ -40,18 +47,20 @@ export function PersonEditDialog({
             label="名"
             type="text"
             value={PersonService.getName(state.person).givenName}
-            onChange={e => setState(produce(s => {
-              s.person.names = (s.person.names || [])
-              s.person.names[0] = (s.person.names[0] || {})
-              s.person.names[0].givenName = e.target.value
-            }))}
+            onChange={e =>
+              setState(
+                produce(s => {
+                  s.person.names = s.person.names || []
+                  s.person.names[0] = s.person.names[0] || {}
+                  s.person.names[0].givenName = e.target.value
+                }),
+              )
+            }
           />
         </div>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose}>
-          取消
-        </Button>
+        <Button onClick={onClose}>取消</Button>
         <Button
           color="primary"
           loading={state.submitting}
@@ -75,7 +84,10 @@ export namespace PersonEditDialog {
   export interface Props extends StateUpProps<State> {
     open: boolean
     onClose(): void
-    onSubmit(person: Person | undefined, patch: Partial<Person>): void | Promise<void>
+    onSubmit(
+      person: Person | undefined,
+      patch: Partial<Person>,
+    ): void | Promise<void>
   }
 
   export interface State {
@@ -87,7 +99,7 @@ export namespace PersonEditDialog {
 
   export const getInitialState = (person?: Person): State => {
     return {
-      mode: (!person || !person.resourceName) ? 'create' : 'update',
+      mode: !person || !person.resourceName ? 'create' : 'update',
       originPerson: person,
       person: person || {},
     }

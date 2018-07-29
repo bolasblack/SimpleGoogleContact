@@ -57,7 +57,9 @@ declare namespace gapi.auth2 {
     disconnect(): void
 
     /* https://developers.google.com/api-client-library/javascript/reference/referencedocs#googleauthgrantofflineaccessoptions */
-    grantOfflineAccess(options?: OfflineAccessOptions): Promise<{ code: string }>
+    grantOfflineAccess(
+      options?: OfflineAccessOptions,
+    ): Promise<{ code: string }>
 
     /* https://developers.google.com/api-client-library/javascript/reference/referencedocs#googleauthattachclickhandlercontainer-options--onsuccess-onfailure */
     attachClickHandler(
@@ -109,7 +111,9 @@ declare namespace gapi.auth2 {
     grant(options: SignInOptions): Promise<GoogleUser>
 
     /* https://developers.google.com/api-client-library/javascript/reference/referencedocs#googleusergrantofflineaccessoptions */
-    grantOfflineAccess(options?: OfflineAccessOptions): Promise<{ code: string }>
+    grantOfflineAccess(
+      options?: OfflineAccessOptions,
+    ): Promise<{ code: string }>
 
     /* https://developers.google.com/api-client-library/javascript/reference/referencedocs#googleuserdisconnect */
     disconnect(): void
@@ -150,12 +154,12 @@ declare namespace gapi.signin2 {
 
 declare namespace gapi.client {
   export interface RequestOptions {
-    path: string;
-    method?: string;
-    params?: any;
-    headers?: any;
-    body?: any;
-    callback?: () => any;
+    path: string
+    method?: string
+    params?: any
+    headers?: any
+    body?: any
+    callback?: () => any
   }
 
   export function request<T = any>(args: RequestOptions): HttpRequest<T>

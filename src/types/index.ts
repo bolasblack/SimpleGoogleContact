@@ -3,8 +3,14 @@ import { Epic } from 'redux-observable'
 import { Container } from 'inversify'
 import { Store, State } from '../store'
 
-export type Epic<Input extends Action = any, Output extends Input = Input> = Epic<Input, Output, State, Container>
+export type Epic<
+  Input extends Action = any,
+  Output extends Input = Input
+> = Epic<Input, Output, State, Container>
 
-export type SetupStore = (store: Store, contaienr: Container) => void | Promise<void>
+export type SetupStore = (
+  store: Store,
+  contaienr: Container,
+) => void | Promise<void>
 
 export type SFCProps<T = {}> = T & { children?: React.ReactNode }

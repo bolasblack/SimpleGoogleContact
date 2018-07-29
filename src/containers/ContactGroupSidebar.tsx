@@ -1,6 +1,10 @@
 import { Inject } from 'react.di'
 import { ContactGroupSidebar as Component } from '../components/ContactGroupSidebar'
-import { ContactGroupService, ContactGroup, ContactGroupResourceName } from '../services/ContactGroupService'
+import {
+  ContactGroupService,
+  ContactGroup,
+  ContactGroupResourceName,
+} from '../services/ContactGroupService'
 import { stateBinding } from '../lib/StateUp'
 
 export interface ContactGroupSidebarProps {
@@ -14,8 +18,12 @@ export interface ContactGroupSidebarState {
   componentState: Component.State
 }
 
-export class ContactGroupSidebar extends React.PureComponent<ContactGroupSidebarProps, ContactGroupSidebarState> {
-  @Inject groupService: ContactGroupService
+export class ContactGroupSidebar extends React.PureComponent<
+  ContactGroupSidebarProps,
+  ContactGroupSidebarState
+> {
+  @Inject
+  groupService: ContactGroupService
 
   state: ContactGroupSidebarState = {
     fetchingData: false,
@@ -33,13 +41,11 @@ export class ContactGroupSidebar extends React.PureComponent<ContactGroupSidebar
         fetchData={this.fetchData}
         fetchingData={this.state.fetchingData}
         contactGroups={this.state.contactGroups}
-
         {...stateBinding(
           () => this.state,
           this.setState.bind(this),
           'componentState',
         )}
-
         selectedResourceName={this.props.selectedResourceName}
         onSelect={group => this.props.onSelect(group.resourceName)}
         onCreate={this.onCreate}
@@ -55,7 +61,10 @@ export class ContactGroupSidebar extends React.PureComponent<ContactGroupSidebar
     void this.fetchData()
   }
 
-  private onUpdate = async (contactGroup: ContactGroup, updated: ContactGroup) => {
+  private onUpdate = async (
+    contactGroup: ContactGroup,
+    updated: ContactGroup,
+  ) => {
     if (!contactGroup.resourceName) {
       // TOOD: 集成 Error 定义一个 DisplayableError 用来抛出异常在顶部抓住后展示
       throw new Error('找不到正在编辑的标签，请刷新页面后重试')
@@ -80,9 +89,14 @@ export class ContactGroupSidebar extends React.PureComponent<ContactGroupSidebar
   private fetchData = async () => {
     this.setState({ fetchingData: true })
 
-    const contactGroups = (await this.groupService.list({ pageSize: 500 })).contactGroups || []
+    const contactGroups =
+      (await this.groupService.list({ pageSize: 500 })).contactGroups || []
 
-    if (!contactGroups.some(g => g.resourceName === this.props.selectedResourceName)) {
+    if (
+      !contactGroups.some(
+        g => g.resourceName === this.props.selectedResourceName,
+      )
+    ) {
       this.props.onSelect()
     }
 

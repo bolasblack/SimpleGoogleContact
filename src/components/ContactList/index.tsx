@@ -1,11 +1,15 @@
-import { List, CircularProgress, Button } from "@material-ui/core"
-import * as Icons from "@material-ui/icons"
-import VirtualList from "react-tiny-virtual-list"
+import { List, CircularProgress, Button } from '@material-ui/core'
+import * as Icons from '@material-ui/icons'
+import VirtualList from 'react-tiny-virtual-list'
 import { StateUpProps, stateBinding } from '../../lib/StateUp'
-import { Person, PersonResourceName, PersonService } from "../../services/PersonService"
-import { ContactListItem } from "./ContactListItem"
-import { PersonEditDialog } from "./PersonEditDialog"
-import { ConfirmDialog } from "../ConfirmDialog"
+import {
+  Person,
+  PersonResourceName,
+  PersonService,
+} from '../../services/PersonService'
+import { ContactListItem } from './ContactListItem'
+import { PersonEditDialog } from './PersonEditDialog'
+import { ConfirmDialog } from '../ConfirmDialog'
 import './style.scss'
 
 export function ContactList(props: ContactList.Props) {
@@ -20,17 +24,20 @@ export function ContactList(props: ContactList.Props) {
   const { persons, state, setState } = props
 
   if (!persons || !persons.length) {
-    return (
-      <div className={`${ContactList.name}__empty-state`}>暂无数据</div>
-    )
+    return <div className={`${ContactList.name}__empty-state`}>暂无数据</div>
   }
 
   return (
-    <List className="ContactList" component="div" dense={true} style={{ height: '100%' }}>
+    <List
+      className="ContactList"
+      component="div"
+      dense={true}
+      style={{ height: '100%' }}
+    >
       <div ref={props.listContainerRef} style={{ height: '100%' }}>
         <VirtualList
           className="ContactList__list"
-          width='100%'
+          width="100%"
           height={props.listContainerHeight}
           itemCount={persons.length}
           itemSize={56}
@@ -44,7 +51,9 @@ export function ContactList(props: ContactList.Props) {
               onClick={() => {
                 setState({
                   updatePersonDialogVisible: true,
-                  updatePersonDialogState: PersonEditDialog.getInitialState(persons[index])
+                  updatePersonDialogState: PersonEditDialog.getInitialState(
+                    persons[index],
+                  ),
                 })
               }}
               onDelete={() => {
@@ -77,7 +86,11 @@ export function ContactList(props: ContactList.Props) {
 
       <ConfirmDialog
         open={!!state.deletingPerson}
-        message={`确认要删除${!state.deletingPerson ? '' : PersonService.getDescribe(state.deletingPerson)}吗？`}
+        message={`确认要删除${
+          !state.deletingPerson
+            ? ''
+            : PersonService.getDescribe(state.deletingPerson)
+        }吗？`}
         onCancel={() => setState({ deletingPerson: undefined })}
         onConfirm={async () => {
           if (!state.deletingPerson) return

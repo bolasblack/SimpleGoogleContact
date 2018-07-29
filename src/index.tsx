@@ -1,10 +1,10 @@
 import * as ReactDOM from 'react-dom'
 import { Provider as ReduxProvider } from 'react-redux'
 import { Provider as DiProvider } from 'react.di'
-import { MuiThemeProvider } from "@material-ui/core"
+import { MuiThemeProvider } from '@material-ui/core'
 import whenDOMReady from 'when-dom-ready'
 import { GapiService } from './services/GapiService'
-import { theme } from "./styles/theme"
+import { theme } from './styles/theme'
 import { container } from './utils/di'
 import { App } from './containers/App'
 import { createStore } from './store'
@@ -13,10 +13,7 @@ import './index.css'
 
 void container.get(GapiService).load()
 
-void Promise.all([
-  whenDOMReady(),
-  createStore(),
-]).then(([_, store]) => {
+void Promise.all([whenDOMReady(), createStore()]).then(([_, store]) => {
   ReactDOM.render(
     <ReduxProvider store={store}>
       <DiProvider container={container}>
@@ -25,7 +22,7 @@ void Promise.all([
         </MuiThemeProvider>
       </DiProvider>
     </ReduxProvider>,
-    document.getElementById('root') as HTMLElement
+    document.getElementById('root') as HTMLElement,
   )
 
   registerServiceWorker()

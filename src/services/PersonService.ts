@@ -1,8 +1,11 @@
 import { Injectable, Inject } from 'react.di'
 import { people_v1 } from 'googleapis'
-import * as R from "ramda"
+import * as R from 'ramda'
 import { GapiService } from './GapiService'
-import { ContactGroupService, ContactGroupResourceName } from "./ContactGroupService"
+import {
+  ContactGroupService,
+  ContactGroupResourceName,
+} from './ContactGroupService'
 
 export type Person = people_v1.Schema$Person
 
@@ -65,14 +68,12 @@ export class PersonService {
   constructor(
     @Inject private gapiService: GapiService,
     @Inject private groupService: ContactGroupService,
-  ) {
-  }
+  ) {}
 
   async list(contactGroupResourceName: ContactGroupResourceName) {
-    const group = await this.groupService.get(
-      contactGroupResourceName,
-      { maxMembers: 2147483647 },
-    )
+    const group = await this.groupService.get(contactGroupResourceName, {
+      maxMembers: 2147483647,
+    })
 
     if (!group.memberResourceNames || !group.memberResourceNames.length) {
       return []
@@ -85,9 +86,11 @@ export class PersonService {
 
   async smartBatchGet(params: BatchGetParams) {
     if (params.resourceNames.length > 50) {
-      const personBunchs = await Promise.all(R.splitEvery(50,  params.resourceNames).map(resourceNames => 
-        this.batchGet({ resourceNames, personFields: params.personFields })
-      ))
+      const personBunchs = await Promise.all(
+        R.splitEvery(50, params.resourceNames).map(resourceNames =>
+          this.batchGet({ resourceNames, personFields: params.personFields }),
+        ),
+      )
 
       return R.chain<Person[], Person>(R.identity as any, personBunchs)
     } else {
@@ -97,14 +100,20 @@ export class PersonService {
 
   async batchGet(params: BatchGetParams) {
     if (params.resourceNames.length > 50) {
-      throw new Error('[PersonService#batchGet] Request must not contain more than 50 resource names.')
+      throw new Error(
+        '[PersonService#batchGet] Request must not contain more than 50 resource names.',
+      )
     }
 
-    return (await this.gapiService.request<{ responses: people_v1.Schema$PersonResponse[] }>({
+    return (await this.gapiService.request<{
+      responses: people_v1.Schema$PersonResponse[]
+    }>({
       path: 'https://people.googleapis.com/v1/people:batchGet',
       params: {
         ...params,
-        personFields: params.personFields ? params.personFields.join(',') : defaultPersonFields.join(','),
+        personFields: params.personFields
+          ? params.personFields.join(',')
+          : defaultPersonFields.join(','),
       },
     })).result.responses.map(resp => {
       if (resp.status && resp.status.code != null) {
@@ -125,7 +134,11 @@ export class PersonService {
     })).result
   }
 
-  async update(resourceName: PersonResourceName, params: UpdateParams, body: people_v1.Schema$Person) {
+  async update(
+    resourceName: PersonResourceName,
+    params: UpdateParams,
+    body: people_v1.Schema$Person,
+  ) {
     return (await this.gapiService.request<people_v1.Schema$ContactGroup>({
       path: `https://people.googleapis.com/v1/${resourceName}:updateContact`,
       method: 'patch',
@@ -145,22 +158,14 @@ export class PersonService {
   }
 
   static getName(person?: Person) {
-    if (
-      person &&
-      person.names &&
-      person.names.length
-    ) {
+    if (person && person.names && person.names.length) {
       return person.names[0] || {}
     }
     return {}
   }
 
   static getPhoto(person?: Person) {
-    if (
-      person &&
-      person.photos &&
-      person.photos.length
-    ) {
+    if (person && person.photos && person.photos.length) {
       return person.photos[0] || {}
     }
 
@@ -168,11 +173,7 @@ export class PersonService {
   }
 
   static getPhoneNumber(person?: Person) {
-    if (
-      person &&
-      person.phoneNumbers &&
-      person.phoneNumbers.length
-    ) {
+    if (person && person.phoneNumbers && person.phoneNumbers.length) {
       return person.phoneNumbers[0] || {}
     }
 
@@ -180,11 +181,7 @@ export class PersonService {
   }
 
   static getEmailAddress(person?: Person) {
-    if (
-      person &&
-      person.emailAddresses &&
-      person.emailAddresses.length
-    ) {
+    if (person && person.emailAddresses && person.emailAddresses.length) {
       return person.emailAddresses[0] || {}
     }
 

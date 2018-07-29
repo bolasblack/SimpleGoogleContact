@@ -3,12 +3,10 @@ import loadjs from 'loadjs'
 import { Store } from '../store'
 import { googleLogin } from '../action_packs'
 
-const CLIENT_ID = '867154717118-u28ti694rr7kksi7kgo9b5mmcklugl4q.apps.googleusercontent.com'
+const CLIENT_ID =
+  '867154717118-u28ti694rr7kksi7kgo9b5mmcklugl4q.apps.googleusercontent.com'
 
-const SCOPES = [
-  'profile',
-  'https://www.googleapis.com/auth/contacts',
-].join(' ')
+const SCOPES = ['profile', 'https://www.googleapis.com/auth/contacts'].join(' ')
 
 @Injectable
 export class GapiService {
@@ -23,28 +21,33 @@ export class GapiService {
 
   async load() {
     if (this.loadPromise) return this.loadPromise
-    return this.loadPromise = new Promise<typeof gapi>((resolve, reject) => {
+    return (this.loadPromise = new Promise<typeof gapi>((resolve, reject) => {
       try {
         loadjs(['https://apis.google.com/js/api.js'], 'gapi', {
-          success() { resolve(gapi) },
+          success() {
+            resolve(gapi)
+          },
           error(depsNotFound: string) {
             reject(new Error('gapi load failed'))
           },
         })
       } catch (err) {
-        if (err === "LoadJS") {
+        if (err === 'LoadJS') {
           resolve(gapi)
         } else {
           reject(err)
         }
       }
-    }).then(gapi => new Promise<typeof gapi>((resolve, reject) => {
-      gapi.load("client:auth2:signin2", () => {
-        gapi.auth2.init({ client_id: CLIENT_ID })
+    }).then(
+      gapi =>
+        new Promise<typeof gapi>((resolve, reject) => {
+          gapi.load('client:auth2:signin2', () => {
+            gapi.auth2.init({ client_id: CLIENT_ID })
 
-        resolve(gapi)
-      })
-    }))
+            resolve(gapi)
+          })
+        }),
+    ))
   }
 
   async logout() {
@@ -56,7 +59,9 @@ export class GapiService {
     const gapi = await this.load()
     gapi.auth2.getAuthInstance()!.isSignedIn.listen(isSignedIn => {
       if (isSignedIn) {
-        store.dispatch(googleLogin.actionCreators.signIn(gapi.auth2.getAuthInstance()!))
+        store.dispatch(
+          googleLogin.actionCreators.signIn(gapi.auth2.getAuthInstance()!),
+        )
       } else {
         store.dispatch(googleLogin.actionCreators.signedOut())
       }

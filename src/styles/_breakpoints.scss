@@ -10,7 +10,7 @@ $breakpoints: (
   $breakpoint-sm,
   $breakpoint-md,
   $breakpoint-lg,
-  $breakpoint-xl,
+  $breakpoint-xl
 );
 
 @mixin breakpoint-up($breakpoint) {

@@ -1,8 +1,15 @@
-import { Tooltip, IconButton, ListItem, ListItemIcon, ListItemText, ListItemSecondaryAction } from '@material-ui/core'
+import {
+  Tooltip,
+  IconButton,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  ListItemSecondaryAction,
+} from '@material-ui/core'
 import { ListItemProps } from '@material-ui/core/ListItem'
 import * as Icons from '@material-ui/icons'
 import { ContactGroup, GroupType } from '../../services/ContactGroupService'
-import { theme } from "../../styles/theme"
+import { theme } from '../../styles/theme'
 
 export interface ContactGroupListItemProps extends ListItemProps {
   contactGroup: ContactGroup
@@ -37,48 +44,42 @@ export const ContactGroupListItem = ({
   return (
     <ListItem
       {...listItemProps}
-      style={actived ? {backgroundColor: '#f5f5f5'} : {}}
+      style={actived ? { backgroundColor: '#f5f5f5' } : {}}
     >
-      <ListItemIcon style={actived ? {fill: theme.palette.primary.main} : {}}>
+      <ListItemIcon style={actived ? { fill: theme.palette.primary.main } : {}}>
         {getContactGroupIcon(contactGroup)}
       </ListItemIcon>
       <ListItemText
         primary={contactGroup.formattedName}
         primaryTypographyProps={{
-          style: actived ? {color: theme.palette.primary.main} : {},
+          style: actived ? { color: theme.palette.primary.main } : {},
         }}
       />
-      {contactGroup.groupType !== GroupType.SystemDefined ? secondaryAction : null}
+      {contactGroup.groupType !== GroupType.SystemDefined
+        ? secondaryAction
+        : null}
     </ListItem>
   )
 }
 
 export const getContactGroupIcon = (contactGroup: ContactGroup) => {
   if (contactGroup.groupType !== GroupType.SystemDefined) {
-    return (<Icons.Label />)
+    return <Icons.Label />
   }
 
-  switch(contactGroup.name) {
+  switch (contactGroup.name) {
     case 'chatBuddies': // 聊天联系人
-      return (
-        <Icons.Chat />
-      )
+      return <Icons.Chat />
     case 'all': // 所有联系人
-      return (
-        <Icons.Contacts />
-      )
+      return <Icons.Contacts />
     case 'starred': // 已加星标
-      return (
-        <Icons.Star />
-      )
+      return <Icons.Star />
     case 'friends': // 朋友
     case 'family': // 家人
     case 'coworkers': // 同事
     case 'blocked': // 已屏蔽
     case 'myContacts': // 通讯录
     default:
-      return (
-        <Icons.FilterNone />
-      )
+      return <Icons.FilterNone />
   }
 }

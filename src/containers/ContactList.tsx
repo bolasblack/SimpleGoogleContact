@@ -1,7 +1,7 @@
 import { Inject } from 'react.di'
-import * as R from "ramda"
+import * as R from 'ramda'
 import { ContactList as Component } from '../components/ContactList'
-import { ContactGroupResourceName } from "../services/ContactGroupService"
+import { ContactGroupResourceName } from '../services/ContactGroupService'
 import { PersonService, Person, PersonField } from '../services/PersonService'
 import { stateBinding } from '../lib/StateUp'
 
@@ -20,17 +20,26 @@ export interface ContactListState {
   virtualListHeight: number
 }
 
-export class ContactList extends React.PureComponent<ContactListProps, ContactListState> {
-  @Inject personService: PersonService
+export class ContactList extends React.PureComponent<
+  ContactListProps,
+  ContactListState
+> {
+  @Inject
+  personService: PersonService
 
-  static getDerivedStateFromProps(nextProps: ContactListProps, prevState: ContactListState) {
+  static getDerivedStateFromProps(
+    nextProps: ContactListProps,
+    prevState: ContactListState,
+  ) {
     if (
-      nextProps.selectedContactGroupResourceName !== prevState.prevSelectedContactGroupResourceName
+      nextProps.selectedContactGroupResourceName !==
+      prevState.prevSelectedContactGroupResourceName
     ) {
       return {
         persons: null,
-        prevSelectedContactGroupResourceName: nextProps.selectedContactGroupResourceName,
-      };
+        prevSelectedContactGroupResourceName:
+          nextProps.selectedContactGroupResourceName,
+      }
     }
 
     return null
@@ -64,17 +73,14 @@ export class ContactList extends React.PureComponent<ContactListProps, ContactLi
       <Component
         listContainerRef={this.updateListContainerRef}
         listContainerHeight={this.state.virtualListHeight}
-
         fetchData={this.fetchData}
         fetchingData={this.state.fetchingData}
         persons={this.state.persons}
-
         {...stateBinding(
           () => this.state,
           this.setState.bind(this),
           'componentState',
         )}
-
         onCreate={this.onCreate}
         onUpdate={this.onUpdate}
         onDelete={this.onDelete}
@@ -87,11 +93,16 @@ export class ContactList extends React.PureComponent<ContactListProps, ContactLi
     this.updateVirtualListHeight(null, el)
   }
 
-  private updateVirtualListHeight = (event?: any, el?: HTMLDivElement | null) => {
+  private updateVirtualListHeight = (
+    event?: any,
+    el?: HTMLDivElement | null,
+  ) => {
     if (el) {
       this.setState({ virtualListHeight: el.clientHeight })
     } else if (this.state.listContainerRef) {
-      this.setState({ virtualListHeight: this.state.listContainerRef.clientHeight })
+      this.setState({
+        virtualListHeight: this.state.listContainerRef.clientHeight,
+      })
     }
   }
 
@@ -107,8 +118,9 @@ export class ContactList extends React.PureComponent<ContactListProps, ContactLi
       throw new Error('找不到正在编辑的联系人，请刷新页面后重试')
     }
 
-    const updatePersonFields = Object.keys(updated).filter((key: string): key is PersonField => 
-      personFields.indexOf(key as any) !== -1
+    const updatePersonFields = Object.keys(updated).filter(
+      (key: string): key is PersonField =>
+        personFields.indexOf(key as any) !== -1,
     )
 
     await this.personService.update(
@@ -137,7 +149,9 @@ export class ContactList extends React.PureComponent<ContactListProps, ContactLi
     this.setState({ fetchingData: true })
     this.setState({
       fetchingData: false,
-      persons: await this.personService.list(this.props.selectedContactGroupResourceName),
+      persons: await this.personService.list(
+        this.props.selectedContactGroupResourceName,
+      ),
     })
   }
 }

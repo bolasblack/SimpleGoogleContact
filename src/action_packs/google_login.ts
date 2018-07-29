@@ -21,13 +21,15 @@ export interface State {
 export enum ActionTypes {
   signIn = 'google_login:signIn',
   signOut = 'google_login:signOut:start',
-  signedOut = 'google_login:signOut:end'
+  signedOut = 'google_login:signOut:end',
 }
 
 export const actionCreators = {
-  signIn: createStandardAction(ActionTypes.signIn).map((gAuth: gapi.auth2.GoogleAuth) => ({
-    payload: pickGoogleAuthInfo(gAuth),
-  })),
+  signIn: createStandardAction(ActionTypes.signIn).map(
+    (gAuth: gapi.auth2.GoogleAuth) => ({
+      payload: pickGoogleAuthInfo(gAuth),
+    }),
+  ),
   signOut: createStandardAction(ActionTypes.signOut)(),
   signedOut: createStandardAction(ActionTypes.signedOut)(),
 }
@@ -44,28 +46,24 @@ export namespace selectors {
 
   export const authResponse = createSelector(
     getGoogleLogin,
-    info => info && info.authResponse
+    info => info && info.authResponse,
   )
 
-  export const isSignedIn = createSelector(
-    authResponse,
-    Boolean,
-  )
+  export const isSignedIn = createSelector(authResponse, Boolean)
 
-  export const isSigningOut = createSelector(
-    getGoogleLogin,
-    info => Boolean(info && info.signOutStartdAt),
+  export const isSigningOut = createSelector(getGoogleLogin, info =>
+    Boolean(info && info.signOutStartdAt),
   )
 }
 
 export const reducer = (state: State, action: Actions) =>
   produce(state, state => {
-    switch(action.type) {
+    switch (action.type) {
       case ActionTypes.signIn:
         state.google_login = { ...action.payload }
         break
       case ActionTypes.signOut:
-        state.google_login = (state.google_login || {})
+        state.google_login = state.google_login || {}
         state.google_login.signOutStartdAt = Date.now()
         break
       case ActionTypes.signedOut:

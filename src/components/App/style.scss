@@ -1,5 +1,5 @@
-@import "../PageHeader/mixins";
-@import "../../styles/zIndex";
+@import '../PageHeader/mixins';
+@import '../../styles/zIndex';
 
 .App {
   $sidebar-width: 260px;
@@ -8,7 +8,9 @@
     z-index: $zIndex-drawer + 1;
   }
 
-  &, &__container, &__main {
+  &,
+  &__container,
+  &__main {
     height: 100%;
   }
 

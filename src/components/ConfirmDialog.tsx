@@ -1,4 +1,10 @@
-import { Dialog, DialogTitle, DialogContent, DialogActions, DialogContentText } from '@material-ui/core'
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  DialogContentText,
+} from '@material-ui/core'
 import { Button } from './Button'
 
 export function ConfirmDialog({
@@ -15,14 +21,14 @@ export function ConfirmDialog({
       disableBackdropClick={true}
       disableEscapeKeyDown={true}
     >
-      { !title ? null : <DialogTitle>{title}</DialogTitle> }
-      { !message ? null : <DialogContent>
-        <DialogContentText>{message}</DialogContentText>
-      </DialogContent> }
+      {!title ? null : <DialogTitle>{title}</DialogTitle>}
+      {!message ? null : (
+        <DialogContent>
+          <DialogContentText>{message}</DialogContentText>
+        </DialogContent>
+      )}
       <DialogActions>
-        <Button onClick={e => onCancel()}>
-          取消
-        </Button>
+        <Button onClick={e => onCancel()}>取消</Button>
         <Button
           color="primary"
           loading={doingConfirmed}

@@ -1,1 +1,1 @@
-pending('renders without crashing');
+pending('renders without crashing')
