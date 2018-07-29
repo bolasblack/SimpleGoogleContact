@@ -1,7 +1,7 @@
 import { Inject } from 'react.di'
 import { ContactGroupSidebar as Component } from '../components/ContactGroupSidebar'
 import { ContactGroupService, ContactGroup, ContactGroupResourceName } from '../services/ContactGroupService'
-import { stateBinding } from '../lib/ComponentHelper'
+import { stateBinding } from '../lib/StateUp'
 
 export interface ContactGroupSidebarProps {
   selectedResourceName?: ContactGroupResourceName

@@ -6,7 +6,7 @@ import { ContactGroupListItem } from './ContactGroupListItem'
 import { ContactGroupEditDialog } from './ContactGroupEditDialog'
 import { ConfirmDialog } from "../ConfirmDialog"
 import './style.scss'
-import { StateUpProps, stateBinding } from '../../lib/ComponentHelper'
+import { StateUpProps, stateBinding } from '../../lib/StateUp'
 import { identity } from 'ramda'
 
 export function ContactGroupSidebar(props: ContactGroupSidebar.Props) {

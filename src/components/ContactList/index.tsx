@@ -1,7 +1,7 @@
 import { List, CircularProgress, Button } from "@material-ui/core"
 import * as Icons from "@material-ui/icons"
 import VirtualList from "react-tiny-virtual-list"
-import { StateUpProps, stateBinding } from '../../lib/ComponentHelper'
+import { StateUpProps, stateBinding } from '../../lib/StateUp'
 import { Person, PersonResourceName, PersonService } from "../../services/PersonService"
 import { ContactListItem } from "./ContactListItem"
 import { PersonEditDialog } from "./PersonEditDialog"

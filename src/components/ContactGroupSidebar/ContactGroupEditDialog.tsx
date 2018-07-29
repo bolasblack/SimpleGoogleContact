@@ -1,6 +1,6 @@
 import { Dialog, DialogTitle, DialogContent, DialogActions, TextField } from '@material-ui/core'
 import { ContactGroup } from '../../services/ContactGroupService'
-import { StateUpProps } from '../../lib/ComponentHelper'
+import { StateUpProps } from '../../lib/StateUp'
 import { Button } from '../Button'
 import { produce } from 'immer'
 

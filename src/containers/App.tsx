@@ -1,7 +1,7 @@
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
 import { createStructuredSelector } from 'reselect'
-import { wrapStateUp } from "../lib/ComponentHelper"
+import { wrapStateUp } from "../lib/StateUp"
 import { App as Component } from '../components/App'
 import { googleLogin } from '../actionPacks'
 

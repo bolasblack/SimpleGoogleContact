@@ -1,5 +1,5 @@
 import { Dialog, DialogTitle, DialogContent, DialogActions, TextField } from '@material-ui/core'
-import { StateUpProps } from '../../lib/ComponentHelper'
+import { StateUpProps } from '../../lib/StateUp'
 import { Button } from '../Button'
 import { Person, PersonService } from '../../services/PersonService'
 import { produce } from "immer"

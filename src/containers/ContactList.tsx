@@ -3,7 +3,7 @@ import * as R from "ramda"
 import { ContactList as Component } from '../components/ContactList'
 import { ContactGroupResourceName } from "../services/ContactGroupService"
 import { PersonService, Person, PersonField } from '../services/PersonService'
-import { stateBinding } from '../lib/ComponentHelper'
+import { stateBinding } from '../lib/StateUp'
 
 const personFields = R.values(PersonField)
 

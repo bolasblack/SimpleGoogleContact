@@ -1,6 +1,6 @@
 import { AppBar, Drawer } from '@material-ui/core'
 import { PageHeader, PageHeaderProps } from '../PageHeader'
-import { StateUpProps } from "../../lib/ComponentHelper"
+import { StateUpProps } from "../../lib/StateUp"
 import { ContactGroupSidebar } from '../../containers/ContactGroupSidebar'
 import { GoogleLoginButton } from '../GoogleLoginButton'
 import './style.scss'
