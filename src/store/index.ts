@@ -1,7 +1,7 @@
 import { applyMiddleware, compose, Store as ReduxStore, createStore as reduxCreateStore } from 'redux'
 import { createEpicMiddleware } from 'redux-observable'
 import { container } from '../utils/di'
-import { Actions, State, epic, reducer, setupStore } from '../actionPacks'
+import { Actions, State, epic, reducer, setupStore } from '../action_packs'
 
 export type State = State
 

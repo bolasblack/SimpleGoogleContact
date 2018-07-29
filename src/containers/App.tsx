@@ -3,7 +3,7 @@ import { Dispatch } from 'redux'
 import { createStructuredSelector } from 'reselect'
 import { wrapStateUp } from "../lib/StateUp"
 import { App as Component } from '../components/App'
-import { googleLogin } from '../actionPacks'
+import { googleLogin } from '../action_packs'
 
 export const mapStateToProps = createStructuredSelector({
   isSignedIn: googleLogin.selectors.isSignedIn,

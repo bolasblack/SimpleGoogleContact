@@ -1,7 +1,7 @@
 import { Injectable } from 'react.di'
 import loadjs from 'loadjs'
 import { Store } from '../store'
-import { googleLogin } from '../actionPacks'
+import { googleLogin } from '../action_packs'
 
 const CLIENT_ID = '867154717118-u28ti694rr7kksi7kgo9b5mmcklugl4q.apps.googleusercontent.com'
 
