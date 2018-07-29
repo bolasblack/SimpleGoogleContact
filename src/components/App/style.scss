@@ -2,28 +2,36 @@
 @import "../../styles/zIndex";
 
 .App {
+  $sidebar-width: 260px;
+
   & &__header {
     z-index: $zIndex-drawer + 1;
   }
 
-  &, &__contaienr {
+  &, &__container {
     height: 100%;
   }
 
   &__container {
     @include PageHeader-padding(padding-top);
+  }
+
+  &__container--unsigned {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100%;
   }
 
   &__sidebar {
     @include PageHeader-padding(padding-top);
-    width: 260px;
+    width: $sidebar-width;
 
     .ContactGroupSidebar__loading-container {
       @include PageHeader-padding(margin-bottom);
     }
+  }
+
+  &__main {
+    margin-left: $sidebar-width;
   }
 }

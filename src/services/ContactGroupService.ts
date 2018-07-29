@@ -10,6 +10,8 @@ export enum GroupType {
 
 export type ContactGroup = people_v1.Schema$ContactGroup
 
+export type ContactGroupResourceName = NonNullable<ContactGroup['resourceName']>
+
 @Injectable
 export class ContactGroupService {
   constructor(
@@ -24,6 +26,13 @@ export class ContactGroupService {
     })).result
   }
 
+  async get(resourceName: ContactGroupResourceName, params?: { maxMember?: number }) {
+    return (await this.gapiService.request<people_v1.Schema$ContactGroup>({
+      path: `https://people.googleapis.com/v1/${resourceName}`,
+      params,
+    })).result
+  }
+
   async create(contactGroup: people_v1.Schema$ContactGroup) {
     return (await this.gapiService.request<people_v1.Schema$ContactGroup>({
       path: 'https://people.googleapis.com/v1/contactGroups',
@@ -32,7 +41,10 @@ export class ContactGroupService {
     })).result
   }
 
-  async update(resourceName: string, contactGroup: people_v1.Schema$ContactGroup) {
+  async update(
+    resourceName: ContactGroupResourceName,
+    contactGroup: people_v1.Schema$ContactGroup,
+  ) {
     return (await this.gapiService.request<people_v1.Schema$ContactGroup>({
       path: `https://people.googleapis.com/v1/${resourceName}`,
       method: 'put',
@@ -40,18 +52,21 @@ export class ContactGroupService {
     })).result
   }
 
-  async delete(resourceName: string) {
+  async delete(resourceName: ContactGroupResourceName) {
     await this.gapiService.request({
       path: `https://people.googleapis.com/v1/${resourceName}`,
       method: 'delete',
     })
   }
 
-  async modifyMember(resourceName: string, params: people_v1.Schema$ModifyContactGroupMembersRequest) {
+  async modifyMember(
+    resourceName: ContactGroupResourceName,
+    body: people_v1.Schema$ModifyContactGroupMembersRequest,
+  ) {
     return (await this.gapiService.request<people_v1.Schema$ModifyContactGroupMembersResponse>({
       path: `https://people.googleapis.com/v1/${resourceName}/members:modify`,
       method: 'post',
-      params,
+      body,
     })).result
   }
 }

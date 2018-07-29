@@ -1,16 +1,39 @@
 import { Tooltip, IconButton, ListItem, ListItemIcon, ListItemText, ListItemSecondaryAction } from '@material-ui/core'
+import { withStyles, StyleRulesCallback, StyledComponentProps } from "@material-ui/core/styles"
 import { ListItemProps } from '@material-ui/core/ListItem'
 import * as Icons from '@material-ui/icons'
 import { ContactGroup, GroupType } from '../../services/ContactGroupService'
 
+type ClassKeys = 'activedListItem' | 'activedListItemIcon' | 'activedListItemText'
+
+const contactListItemStyle: StyleRulesCallback<ClassKeys> = theme => ({
+  activedListItem: {
+    '&&': {
+      opacity: 1,
+      backgroundColor: '#f5f5f5',
+      pointerEvents: 'auto',
+    },
+  },
+  activedListItemIcon: {
+    fill: theme.palette.primary.main,
+  },
+  activedListItemText: {
+    color: theme.palette.primary.main,
+  },
+})
+
 export interface ContactListItemProps extends ListItemProps {
+  classes: ListItemProps['classes'] & StyledComponentProps<ClassKeys>['classes']
   contactGroup: ContactGroup
+  actived?: boolean
   onUpdate?: () => void
   onDelete?: () => void
 }
 
-export const ContactListItem = ({
+export const UnwrappedContactListItem = ({
+  classes,
   contactGroup,
+  actived,
   onUpdate,
   onDelete,
   ...listItemProps
@@ -30,16 +53,34 @@ export const ContactListItem = ({
     </ListItemSecondaryAction>
   )
 
+  const {
+    activedListItem,
+    activedListItemIcon,
+    activedListItemText,
+    ...listItemClasses
+  } = classes!
+
   return (
-    <ListItem {...listItemProps}>
-      <ListItemIcon>
+    <ListItem
+      {...listItemProps}
+      classes={listItemClasses}
+      className={actived ? activedListItem : ''}
+    >
+      <ListItemIcon className={actived ? activedListItemIcon : ''}>
         {getContactIcon(contactGroup)}
       </ListItemIcon>
-      <ListItemText primary={contactGroup.formattedName} />
+      <ListItemText
+        primary={contactGroup.formattedName}
+        primaryTypographyProps={{
+          className: actived ? activedListItemText : '',
+        }}
+      />
       {contactGroup.groupType !== GroupType.SystemDefined ? secondaryAction : null}
     </ListItem>
   )
 }
+
+export const ContactListItem = withStyles(contactListItemStyle)(UnwrappedContactListItem)
 
 export const getContactIcon = (contactGroup: ContactGroup) => {
   if (contactGroup.groupType !== GroupType.SystemDefined) {

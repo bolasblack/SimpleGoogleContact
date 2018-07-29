@@ -1,7 +1,12 @@
 import { Inject } from 'react.di'
 import { ContactGroupSidebar as Component } from '../components/ContactGroupSidebar'
-import { ContactGroupService, ContactGroup } from '../services/ContactGroupService'
+import { ContactGroupService, ContactGroup, ContactGroupResourceName } from '../services/ContactGroupService'
 import { stateBinding } from '../lib/ComponentHelper'
+
+export interface ContactGroupSidebarProps {
+  selectedResourceName?: ContactGroupResourceName
+  onSelect?: (contactGroup: ContactGroup) => void
+}
 
 export interface ContactGroupSidebarState {
   fetchingData: boolean
@@ -9,7 +14,7 @@ export interface ContactGroupSidebarState {
   componentState: Component.State
 }
 
-export class ContactGroupSidebar extends React.PureComponent<{}, ContactGroupSidebarState> {
+export class ContactGroupSidebar extends React.PureComponent<ContactGroupSidebarProps, ContactGroupSidebarState> {
   @Inject groupService: ContactGroupService
 
   state: ContactGroupSidebarState = {
@@ -35,15 +40,13 @@ export class ContactGroupSidebar extends React.PureComponent<{}, ContactGroupSid
           'componentState',
         )}
 
-        onSelect={this.onSelect}
+        selectedResourceName={this.props.selectedResourceName}
+        onSelect={this.props.onSelect}
         onCreate={this.onCreate}
         onUpdate={this.onUpdate}
         onDelete={this.onDelete}
       />
     )
-  }
-
-  private onSelect = (contactGroup: ContactGroup) => {
   }
 
   private onCreate = async (contactGroup: ContactGroup) => {
@@ -76,9 +79,12 @@ export class ContactGroupSidebar extends React.PureComponent<{}, ContactGroupSid
 
   private fetchData = async () => {
     this.setState({ fetchingData: true })
+
+    const contactGroups = (await this.groupService.list({ pageSize: 500 })).contactGroups!
+
     this.setState({
       fetchingData: false,
-      contactGroups: (await this.groupService.list({ pageSize: 500 })).contactGroups!,
+      contactGroups,
     })
   }
 }
