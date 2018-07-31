@@ -1,6 +1,6 @@
 import { AppBar, Drawer } from '@material-ui/core'
 import { PageHeader, PageHeaderProps } from '../PageHeader'
-import { StateUpProps } from '../../lib/StateUp'
+import { StateUpProps, StateContext } from '../../lib/StateUp'
 import { ContactGroupSidebar } from '../../containers/ContactGroupSidebar'
 import { GoogleLoginButton } from '../GoogleLoginButton'
 import './style.scss'
@@ -73,5 +73,5 @@ export namespace App {
     selectedContactGroupResourceName?: ContactGroupResourceName
   }
 
-  export const getInitialState = (): State => ({})
+  export const getInitialState = () => new StateContext<State>({})
 }

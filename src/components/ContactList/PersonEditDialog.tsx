@@ -97,11 +97,9 @@ export namespace PersonEditDialog {
     submitting?: boolean
   }
 
-  export const getInitialState = (person?: Person): State => {
-    return {
-      mode: !person || !person.resourceName ? 'create' : 'update',
-      originPerson: person,
-      person: person || {},
-    }
-  }
+  export const getInitialState = (person?: Person): State => ({
+    mode: !person || !person.resourceName ? 'create' : 'update',
+    originPerson: person,
+    person: person || {},
+  })
 }

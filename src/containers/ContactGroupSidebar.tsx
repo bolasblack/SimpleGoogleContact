@@ -5,7 +5,7 @@ import {
   ContactGroup,
   ContactGroupResourceName,
 } from '../services/ContactGroupService'
-import { stateBinding } from '../lib/StateUp'
+import { StateContext } from '../lib/StateUp'
 
 export interface ContactGroupSidebarProps {
   selectedResourceName?: ContactGroupResourceName
@@ -15,7 +15,7 @@ export interface ContactGroupSidebarProps {
 export interface ContactGroupSidebarState {
   fetchingData: boolean
   contactGroups: ContactGroup[]
-  componentState: Component.State
+  componentState: StateContext<Component.State>
 }
 
 export class ContactGroupSidebar extends React.PureComponent<
@@ -41,7 +41,7 @@ export class ContactGroupSidebar extends React.PureComponent<
         fetchData={this.fetchData}
         fetchingData={this.state.fetchingData}
         contactGroups={this.state.contactGroups}
-        {...stateBinding(
+        {...this.state.componentState.stateBinding(
           () => this.state,
           this.setState.bind(this),
           'componentState',

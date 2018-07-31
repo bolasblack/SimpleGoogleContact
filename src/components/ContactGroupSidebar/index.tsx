@@ -8,7 +8,6 @@ import {
   CircularProgress,
 } from '@material-ui/core'
 import * as Icons from '@material-ui/icons'
-import { compose } from 'ramda'
 import {
   ContactGroup,
   GroupType,
@@ -18,7 +17,7 @@ import { ContactGroupListItem } from './ContactGroupListItem'
 import { ContactGroupEditDialog } from './ContactGroupEditDialog'
 import { ConfirmDialog } from '../ConfirmDialog'
 import './style.scss'
-import { StateUpProps, stateBinding } from '../../lib/StateUp'
+import { StateUpProps, StateContext } from '../../lib/StateUp'
 import { identity } from 'ramda'
 
 export function ContactGroupSidebar(props: ContactGroupSidebar.Props) {
@@ -34,6 +33,8 @@ export function ContactGroupSidebar(props: ContactGroupSidebar.Props) {
     onDelete,
   } = props
 
+  const { contactGroupCreateDialogState, contactGroupEditDialogState } = state
+
   if (fetchingData) {
     return (
       <div className="ContactGroupSidebar__loading-container">
@@ -48,22 +49,20 @@ export function ContactGroupSidebar(props: ContactGroupSidebar.Props) {
           selectedResourceName,
           onSelect: onSelect || identity,
           onCreate() {
-            const newState = compose(
-              (s: ContactGroupEditDialog.State) =>
-                ContactGroupEditDialog.setVisible(true, s),
-              ContactGroupEditDialog.getInitialState,
-            )(undefined)
+            const ctx = ContactGroupEditDialog.setVisible(
+              true,
+              ContactGroupEditDialog.getInitialState(),
+            )
 
-            setState({ contactGroupCreateDialogState: newState })
+            setState({ contactGroupCreateDialogState: ctx })
           },
           onUpdate(group) {
-            const newState = compose(
-              (s: ContactGroupEditDialog.State) =>
-                ContactGroupEditDialog.setVisible(true, s),
-              ContactGroupEditDialog.getInitialState,
-            )(group)
+            const ctx = ContactGroupEditDialog.setVisible(
+              true,
+              ContactGroupEditDialog.getInitialState(group),
+            )
 
-            setState({ contactGroupEditDialogState: newState })
+            setState({ contactGroupEditDialogState: ctx })
           },
           onDelete(group) {
             setState({
@@ -96,7 +95,7 @@ export function ContactGroupSidebar(props: ContactGroupSidebar.Props) {
         />
 
         <ContactGroupEditDialog
-          {...stateBinding(
+          {...contactGroupCreateDialogState.stateBinding(
             props.getState,
             setState,
             'contactGroupCreateDialogState',
@@ -110,7 +109,7 @@ export function ContactGroupSidebar(props: ContactGroupSidebar.Props) {
         />
 
         <ContactGroupEditDialog
-          {...stateBinding(
+          {...contactGroupEditDialogState.stateBinding(
             props.getState,
             setState,
             'contactGroupEditDialogState',
@@ -201,20 +200,19 @@ export namespace ContactGroupSidebar {
   }
 
   export interface State {
-    contactGroupCreateDialogState: ContactGroupEditDialog.State
-    contactGroupEditDialogState: ContactGroupEditDialog.State
+    contactGroupCreateDialogState: StateContext<ContactGroupEditDialog.State>
+    contactGroupEditDialogState: StateContext<ContactGroupEditDialog.State>
     editingContactGroup: ContactGroup | null
     deletingContactGroup: ContactGroup | null
     doingDeleting: boolean
   }
 
-  export const getInitialState = (): State => {
-    return {
+  export const getInitialState = () =>
+    new StateContext<State>({
       contactGroupCreateDialogState: ContactGroupEditDialog.getInitialState(),
       contactGroupEditDialogState: ContactGroupEditDialog.getInitialState(),
       editingContactGroup: null,
       deletingContactGroup: null,
       doingDeleting: false,
-    }
-  }
+    })
 }

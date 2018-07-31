@@ -6,9 +6,8 @@ import {
   TextField,
 } from '@material-ui/core'
 import { ContactGroup } from '../../services/ContactGroupService'
-import { StateUpProps } from '../../lib/StateUp'
+import { StateUpProps, StateContext } from '../../lib/StateUp'
 import { Button } from '../Button'
-import { produce } from 'immer'
 
 export function ContactGroupEditDialog({
   state,
@@ -68,19 +67,16 @@ export namespace ContactGroupEditDialog {
     submitting?: boolean
   }
 
-  export const getInitialState = (
-    contactGroup?: Partial<ContactGroup>,
-  ): State => {
-    return {
+  export const getInitialState = (contactGroup?: Partial<ContactGroup>) =>
+    new StateContext<State>({
       open: false,
       mode: !contactGroup || !contactGroup.resourceName ? 'create' : 'update',
       contactGroup: contactGroup || {},
       name: (contactGroup && contactGroup.name) || '',
-    }
-  }
+    })
 
-  export const setVisible = (visible: boolean, state: State) => {
-    return produce(state, state => {
+  export const setVisible = (visible: boolean, ctx: StateContext<State>) => {
+    return ctx.produce(state => {
       state.open = visible
     })
   }
