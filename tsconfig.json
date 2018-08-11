@@ -24,6 +24,10 @@
     "removeComments": false,
     "importHelpers": true
   },
+  "include": [
+    "src",
+    "configs"
+  ],
   "exclude": [
     "node_modules",
     "build",
