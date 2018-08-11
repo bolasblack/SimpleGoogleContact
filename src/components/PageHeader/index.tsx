@@ -1,11 +1,9 @@
-import {
-  Toolbar,
-  Avatar,
-  IconButton,
-  Menu,
-  MenuItem,
-  Typography,
-} from '@material-ui/core'
+import Toolbar from '@material-ui/core/Toolbar'
+import Avatar from '@material-ui/core/Avatar'
+import IconButton from '@material-ui/core/IconButton'
+import Menu from '@material-ui/core/Menu'
+import MenuItem from '@material-ui/core/MenuItem'
+import Typography from '@material-ui/core/Typography'
 import './style.scss'
 
 export interface PageHeaderProps {

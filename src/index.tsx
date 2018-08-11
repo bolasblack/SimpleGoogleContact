@@ -1,7 +1,7 @@
 import ReactDOM from 'react-dom'
 import { Provider as ReduxProvider } from 'react-redux'
 import { Provider as DiProvider } from 'react.di'
-import { MuiThemeProvider } from '@material-ui/core'
+import { MuiThemeProvider } from '@material-ui/core/styles'
 import whenDOMReady from 'when-dom-ready'
 import { GapiService } from './services/GapiService'
 import { theme } from './styles/theme'

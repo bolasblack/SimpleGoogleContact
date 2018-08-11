@@ -1,4 +1,5 @@
-import { AppBar, Drawer } from '@material-ui/core'
+import AppBar from '@material-ui/core/AppBar'
+import Drawer from '@material-ui/core/Drawer'
 import { PageHeader, PageHeaderProps } from '../PageHeader'
 import { StateUpProps, StateContext } from '../../lib/StateUp'
 import { ContactGroupSidebar } from '../../containers/ContactGroupSidebar'

@@ -2,6 +2,7 @@ import path from 'path'
 
 import webpack from 'webpack'
 import webpackMerge from 'webpack-merge'
+import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
 import CleanWebpackPlugin from 'clean-webpack-plugin'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 import {} from 'webpack-dev-server'
@@ -11,6 +12,9 @@ export function getStandardConfig(): Partial<webpack.Configuration> {
   return {
     plugins: [
       new webpack.WatchIgnorePlugin([/node_modules/]),
+      new BundleAnalyzerPlugin({
+        openAnalyzer: false,
+      }),
       new CleanWebpackPlugin(['dist'], {
         root: path.resolve(__dirname, '../'),
         verbose: true,

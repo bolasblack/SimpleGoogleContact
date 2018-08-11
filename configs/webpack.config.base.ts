@@ -23,7 +23,7 @@ export const config: Configuration = {
       {
         test: /\.tsx?$/,
         include: [path.resolve(__dirname, '../src')],
-        use: ['ts-loader'],
+        use: ['babel-loader', 'ts-loader'],
       },
       {
         test: /\.(scss|sass)$/,

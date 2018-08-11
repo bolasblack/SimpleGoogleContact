@@ -1,13 +1,10 @@
-import {
-  Avatar,
-  Tooltip,
-  IconButton,
-  ListItem,
-  ListItemText,
-  ListItemSecondaryAction,
-} from '@material-ui/core'
-import * as Icons from '@material-ui/icons'
-import { ListItemProps } from '@material-ui/core/ListItem'
+import Avatar from '@material-ui/core/Avatar'
+import Tooltip from '@material-ui/core/Tooltip'
+import IconButton from '@material-ui/core/IconButton'
+import ListItem, { ListItemProps } from '@material-ui/core/ListItem'
+import ListItemText from '@material-ui/core/ListItemText'
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
+import DeleteIcon from '@material-ui/icons/Delete'
 import { Person, PersonService } from '../../services/PersonService'
 
 const DEFAULT_AVATAR =
@@ -49,7 +46,7 @@ export const ContactListItem = ({
         <ListItemSecondaryAction className="ContactList__list-item__actions">
           <Tooltip title="删除联系人">
             <IconButton onClick={onDelete}>
-              <Icons.Delete />
+              <DeleteIcon />
             </IconButton>
           </Tooltip>
         </ListItemSecondaryAction>

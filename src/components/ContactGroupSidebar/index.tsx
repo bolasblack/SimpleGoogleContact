@@ -1,13 +1,11 @@
-import {
-  List,
-  ListSubheader,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  Divider,
-  CircularProgress,
-} from '@material-ui/core'
-import * as Icons from '@material-ui/icons'
+import List from '@material-ui/core/List'
+import ListSubheader from '@material-ui/core/ListSubheader'
+import ListItem from '@material-ui/core/ListItem'
+import ListItemIcon from '@material-ui/core/ListItemIcon'
+import ListItemText from '@material-ui/core/ListItemText'
+import Divider from '@material-ui/core/Divider'
+import CircularProgress from '@material-ui/core/CircularProgress'
+import AddIcon from '@material-ui/icons/Add'
 import {
   ContactGroup,
   GroupType,
@@ -167,7 +165,7 @@ const renderContactGroupSidebarList = (props: {
         ))}
         <ListItem dense={true} button={true}>
           <ListItemIcon>
-            <Icons.Add />
+            <AddIcon />
           </ListItemIcon>
           <ListItemText primary="新建标签" onClick={() => props.onCreate()} />
         </ListItem>

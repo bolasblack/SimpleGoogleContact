@@ -1,6 +1,6 @@
 import { Injectable, Inject } from 'react.di'
 import { people_v1 } from 'googleapis'
-import * as R from 'ramda'
+import { splitEvery, chain, identity } from 'ramda'
 import { GapiService } from './GapiService'
 import {
   ContactGroupService,
@@ -87,12 +87,12 @@ export class PersonService {
   async smartBatchGet(params: BatchGetParams) {
     if (params.resourceNames.length > 50) {
       const personBunchs = await Promise.all(
-        R.splitEvery(50, params.resourceNames).map(resourceNames =>
+        splitEvery(50, params.resourceNames).map(resourceNames =>
           this.batchGet({ resourceNames, personFields: params.personFields }),
         ),
       )
 
-      return R.chain<Person[], Person>(R.identity as any, personBunchs)
+      return chain<Person[], Person>(identity as any, personBunchs)
     } else {
       return this.batchGet(params)
     }

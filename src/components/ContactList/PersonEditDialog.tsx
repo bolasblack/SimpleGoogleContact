@@ -1,10 +1,8 @@
-import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  TextField,
-} from '@material-ui/core'
+import Dialog from '@material-ui/core/Dialog'
+import DialogTitle from '@material-ui/core/DialogTitle'
+import DialogContent from '@material-ui/core/DialogContent'
+import DialogActions from '@material-ui/core/DialogActions'
+import TextField from '@material-ui/core/TextField'
 import { StateUpProps } from '../../lib/StateUp'
 import { Button } from '../Button'
 import { Person, PersonService } from '../../services/PersonService'

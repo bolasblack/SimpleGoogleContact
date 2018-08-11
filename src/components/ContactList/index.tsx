@@ -1,5 +1,7 @@
-import { List, CircularProgress, Button } from '@material-ui/core'
-import * as Icons from '@material-ui/icons'
+import List from '@material-ui/core/List'
+import CircularProgress from '@material-ui/core/CircularProgress'
+import Button from '@material-ui/core/Button'
+import AddIcon from '@material-ui/icons/Add'
 import VirtualList from 'react-tiny-virtual-list'
 import { StateUpProps, stateBinding } from '../../lib/StateUp'
 import {
@@ -81,7 +83,7 @@ export function ContactList(props: ContactList.Props) {
           })
         }}
       >
-        <Icons.Add />
+        <AddIcon />
       </Button>
 
       <ConfirmDialog
