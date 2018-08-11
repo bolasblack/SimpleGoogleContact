@@ -3,6 +3,7 @@ const ENV = process.env.NODE_ENV || 'development'
 
 module.exports = {
   plugins: [
+    ENV === 'development' ? 'react-hot-loader/babel' : undefined,
     [
       'transform-imports',
       {
@@ -16,12 +17,12 @@ module.exports = {
         },
       },
     ],
-  ],
+  ].filter(i => i),
   presets: [
     [
       '@babel/preset-env',
       {
-        modules: process.env.NODE_ENV === 'test' ? 'commonjs' : false,
+        modules: ENV === 'test' ? 'commonjs' : false,
         targets: {
           browsers: [
             'last 2 Chrome versions',

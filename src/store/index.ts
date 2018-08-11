@@ -5,17 +5,20 @@ import {
   createStore as reduxCreateStore,
 } from 'redux'
 import { createEpicMiddleware } from 'redux-observable'
+import { BehaviorSubject } from 'rxjs'
+import { switchMap } from 'rxjs/operators'
+import { Epic } from '../types'
 import { container } from '../utils/di'
-import { Actions, State, epic, reducer, setupStore } from '../action_packs'
+import { RootActions, ActionState, epic, reducer } from '../action_packs'
 
-export type State = State
+export type RootState = ActionState
 
-export type Store = ReduxStore<State>
+export type Store = ReduxStore<ActionState>
 
 const epicMiddleware = createEpicMiddleware<
-  Actions,
-  Actions,
-  State,
+  RootActions,
+  RootActions,
+  RootState,
   typeof container
 >({
   dependencies: container,
@@ -24,6 +27,10 @@ const epicMiddleware = createEpicMiddleware<
 const composeEnhancers =
   (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 
+const epic$ = new BehaviorSubject(epic)
+const hotReloadingEpic: Epic<RootActions> = (...args) =>
+  epic$.pipe(switchMap(epic => epic(...args)))
+
 export async function createStore() {
   const store = reduxCreateStore(
     reducer,
@@ -31,9 +38,21 @@ export async function createStore() {
     composeEnhancers(applyMiddleware(epicMiddleware)),
   )
 
-  epicMiddleware.run(epic)
+  epicMiddleware.run(hotReloadingEpic)
 
-  await setupStore(store, container)
+  if (module.hot) {
+    module.hot.accept('../action_packs', () => {
+      console.log('[Store HMR] triggered')
+
+      const pack = require('../action_packs')
+
+      store.replaceReducer(pack.reducer)
+      console.log('[Store HMR] reducer replaced')
+
+      epic$.next(pack.epic)
+      console.log('[Store HMR] epic replaced')
+    })
+  }
 
   return store
 }
