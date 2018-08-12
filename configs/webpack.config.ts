@@ -5,16 +5,19 @@ import webpackMerge from 'webpack-merge'
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
 import CleanWebpackPlugin from 'clean-webpack-plugin'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
+import CopyWebpackPlugin from 'copy-webpack-plugin'
+import { InterpolateWebpackPlugin } from 'interpolate-webpack-plugin'
 import {} from 'webpack-dev-server'
 import { config as baseConfig } from './webpack.config.base'
 
-export function getStandardConfig(): Partial<webpack.Configuration> {
+const interpolateWebpackPlugin = new InterpolateWebpackPlugin()
+
+export async function getStandardConfig(): Promise<
+  Partial<webpack.Configuration>
+> {
   return {
     plugins: [
       new webpack.WatchIgnorePlugin([/node_modules/]),
-      new BundleAnalyzerPlugin({
-        openAnalyzer: false,
-      }),
       new CleanWebpackPlugin(['dist'], {
         root: path.resolve(__dirname, '../'),
         verbose: true,
@@ -23,6 +26,20 @@ export function getStandardConfig(): Partial<webpack.Configuration> {
         template: 'public/index.html',
         inject: 'head',
         chunks: ['main'],
+      }),
+      new CopyWebpackPlugin([
+        {
+          from: 'public',
+          to: '.',
+          ignore: ['index.html'],
+        },
+      ]),
+      interpolateWebpackPlugin,
+      new webpack.DefinePlugin({
+        ...(await interpolateWebpackPlugin.definePlugin()),
+      }),
+      new BundleAnalyzerPlugin({
+        openAnalyzer: false,
       }),
     ],
     optimization: {
@@ -41,4 +58,4 @@ export function getStandardConfig(): Partial<webpack.Configuration> {
   }
 }
 
-export default () => webpackMerge(baseConfig, getStandardConfig())
+export default async () => webpackMerge(baseConfig, await getStandardConfig())
