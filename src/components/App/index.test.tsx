@@ -1,1 +1,0 @@
-pending('renders without crashing')

@@ -81,7 +81,11 @@ export const reducer = (state: State, action: Actions) =>
     }
   })
 
-export const signInStatusEpic: Epic<Actions> = (action$, state$, container) => {
+export const signInStatusEpic: Epic<State, Actions> = (
+  action$,
+  state$,
+  container,
+) => {
   const gapiService = container.get(GapiService)
   return gapiService.isSignedIn$.pipe(
     flatMap(async isSignedIn => {
@@ -94,7 +98,7 @@ export const signInStatusEpic: Epic<Actions> = (action$, state$, container) => {
   )
 }
 
-export const signOutEpic: Epic<Actions> = (action$, state$, container) =>
+export const signOutEpic: Epic<State, Actions> = (action$, state$, container) =>
   action$.pipe(
     filter(isOfType(ActionTypes.signOut)),
     debounceTime(1000),

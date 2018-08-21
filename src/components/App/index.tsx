@@ -3,13 +3,13 @@ import Drawer from '@material-ui/core/Drawer'
 import { PageHeader, PageHeaderProps } from '../PageHeader'
 import { StateUpProps, StateContext } from '../../lib/StateUp'
 import { ContactGroupSidebar } from '../../containers/ContactGroupSidebar'
+import { ContactList } from '../../containers/ContactList'
 import { GoogleLoginButton } from '../GoogleLoginButton'
 import './style.scss'
 import {
   ContactGroupResourceName,
   DEFAULT_RESOURCE_NAME as DEFAULT_CONTACT_GROUP_RESOURCE_NAME,
 } from '../../services/ContactGroupService'
-import { ContactList } from '../../containers/ContactList'
 
 export function App(props: App.Props) {
   const { userinfo, isSignedIn, isSigningOut, onSignOut } = props
