@@ -58,28 +58,27 @@ export namespace selectors {
   )
 }
 
-export const reducer = (state: State, action: Actions) =>
-  produce(state, state => {
-    switch (action.type) {
-      case ActionTypes.signIn:
-        state.google_login = { ...action.payload }
-        break
-      case ActionTypes.signOut:
-        state.google_login = state.google_login || {}
-        state.google_login.signOutStartdAt = Date.now()
-        break
-      case ActionTypes.signOutCanceled:
+export const reducer = produce<State, Actions>((state, action) => {
+  switch (action.type) {
+    case ActionTypes.signIn:
+      state.google_login = { ...action.payload }
+      break
+    case ActionTypes.signOut:
+      state.google_login = state.google_login || {}
+      state.google_login.signOutStartdAt = Date.now()
+      break
+    case ActionTypes.signOutCanceled:
+      delete state.google_login!.signOutStartdAt
+      break
+    case ActionTypes.signedOut:
+      if (selectors.isSigningOut(state)) {
         delete state.google_login!.signOutStartdAt
-        break
-      case ActionTypes.signedOut:
-        if (selectors.isSigningOut(state)) {
-          delete state.google_login!.signOutStartdAt
-          delete state.google_login!.authResponse
-          delete state.google_login!.basicProfile
-        }
-        break
-    }
-  })
+        delete state.google_login!.authResponse
+        delete state.google_login!.basicProfile
+      }
+      break
+  }
+})
 
 export const signInStatusEpic: Epic<State, Actions> = (
   action$,

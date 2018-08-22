@@ -1,5 +1,7 @@
 declare module 'sass'
 declare module 'webpack-bundle-analyzer'
+declare module 'event-hooks-webpack-plugin'
+declare module 'event-hooks-webpack-plugin/lib/tasks'
 
 declare module '*.scss'
 declare module '*.sass'

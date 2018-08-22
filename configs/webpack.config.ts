@@ -6,9 +6,13 @@ import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
 import CleanWebpackPlugin from 'clean-webpack-plugin'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 import CopyWebpackPlugin from 'copy-webpack-plugin'
+import EventHooksPlugin from 'event-hooks-webpack-plugin'
+import { PromiseTask } from 'event-hooks-webpack-plugin/lib/tasks'
 import { InterpolateWebpackPlugin } from 'interpolate-webpack-plugin'
 import {} from 'webpack-dev-server'
 import { config as baseConfig } from './webpack.config.base'
+
+import { generateActionsRequireFile } from '../scripts/code_generators'
 
 const interpolateWebpackPlugin = new InterpolateWebpackPlugin()
 
@@ -40,6 +44,11 @@ export async function getStandardConfig(): Promise<
       }),
       new BundleAnalyzerPlugin({
         openAnalyzer: false,
+      }),
+      new EventHooksPlugin({
+        watchRun: new PromiseTask(async () => {
+          await generateActionsRequireFile()
+        }),
       }),
     ],
     optimization: {

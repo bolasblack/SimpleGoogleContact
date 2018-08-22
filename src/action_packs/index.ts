@@ -1,17 +1,11 @@
-import { combineEpics } from 'redux-observable'
-import { compose } from 'redux'
-import * as googleLogin from './google_login'
+import * as pkgs from './__index__'
 
-export { googleLogin }
+export * from './__index__'
 
-export const epic = combineEpics(googleLogin.epic)
+export type ActionState = pkgs.State
 
-export const reducer = compose(googleLogin.reducer)
+export type RootActions = pkgs.Actions
 
-// prettier-ignore
-export type ActionState =
-  | googleLogin.State
+export const reducer = pkgs.reducer
 
-// prettier-ignore
-export type RootActions =
-  | googleLogin.Actions
+export const epic = pkgs.epic

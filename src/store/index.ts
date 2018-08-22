@@ -28,7 +28,7 @@ const composeEnhancers =
   (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 
 const epic$ = new BehaviorSubject(epic)
-const hotReloadingEpic: Epic<RootActions> = (...args) =>
+const hotReloadingEpic: Epic<RootState, RootActions> = (...args) =>
   epic$.pipe(switchMap(epic => epic(...args)))
 
 export async function createStore() {
